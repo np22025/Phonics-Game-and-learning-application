@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { CHARACTERS, type CharacterId } from "../data/characters";
+import { CHARACTERS, type CharacterId, type CharacterDef } from "../data/characters";
 import { CharacterImage } from "./CharacterImage";
 
 interface Props {
@@ -105,7 +105,7 @@ function TrappedOverlay({
   scenario,
   progress,
 }: {
-  scenario: ReturnType<typeof Object.values<typeof CHARACTERS>>[number]["rescueScenario"];
+  scenario: CharacterDef["rescueScenario"];
   progress: number;
 }) {
   const opacity = Math.max(0, 0.85 - progress * 0.85);
