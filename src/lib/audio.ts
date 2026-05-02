@@ -271,17 +271,50 @@ if (typeof window !== "undefined" && "speechSynthesis" in window) {
   };
 }
 
+// Chrome's speechSynthesis has a known bug where it auto-pauses after ~15s
+// of silence. We work around it by pinging pause/resume periodically.
+let keepaliveStarted = false;
+function startSpeechKeepalive() {
+  if (keepaliveStarted) return;
+  if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+  keepaliveStarted = true;
+  setInterval(() => {
+    try {
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.pause();
+        window.speechSynthesis.resume();
+      }
+    } catch {
+      // ignore
+    }
+  }, 5000);
+}
+
 export function speak(text: string, opts: { rate?: number; pitch?: number } = {}) {
   if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+  if (!text) return;
   try {
+    // Cancel anything already queued. On some browsers this leaves the
+    // synth in a paused state, so we always call resume() before speaking.
     window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    const voice = pickVoice();
-    if (voice) u.voice = voice;
-    u.rate = opts.rate ?? 0.95;
-    u.pitch = opts.pitch ?? 1.05;
-    u.lang = u.voice?.lang ?? "en-US";
-    window.speechSynthesis.speak(u);
+    // Tiny delay lets cancel() fully take effect on Chrome — without this
+    // the next utterance can be silently dropped.
+    setTimeout(() => {
+      try {
+        const u = new SpeechSynthesisUtterance(text);
+        const voice = pickVoice();
+        if (voice) u.voice = voice;
+        u.rate = opts.rate ?? 0.95;
+        u.pitch = opts.pitch ?? 1.05;
+        u.lang = u.voice?.lang ?? "en-US";
+        // Resume in case the synth is paused (Chrome bug).
+        window.speechSynthesis.resume();
+        window.speechSynthesis.speak(u);
+        startSpeechKeepalive();
+      } catch {
+        // ignore
+      }
+    }, 30);
   } catch {
     // ignore
   }
@@ -300,8 +333,14 @@ export function primeAudio() {
   getCtx();
   if (typeof window !== "undefined" && "speechSynthesis" in window) {
     try {
-      const u = new SpeechSynthesisUtterance("");
+      // Empty utterance unlocks speech on iOS Safari.
+      const u = new SpeechSynthesisUtterance(" ");
+      u.volume = 0;
       window.speechSynthesis.speak(u);
+      window.speechSynthesis.resume();
+      // Force voice list to populate.
+      window.speechSynthesis.getVoices();
+      startSpeechKeepalive();
     } catch {
       // ignore
     }

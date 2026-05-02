@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { sfx, speak } from "../../lib/audio";
 import type { WordSortChallenge } from "../../types";
@@ -18,30 +18,41 @@ export function WordSort({ challenge, onAnswer, questionNumber, totalQuestions }
   const [placed, setPlaced] = useState<Record<number, number>>({});
   const [selectedItem, setSelectedItem] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<Record<number, "right" | "wrong">>({});
-  const [done, setDone] = useState(false);
+
+  // Use refs (not state) for the "done" flag and onAnswer so the completion
+  // effect runs exactly once and isn't disturbed by re-renders. (Bug fix:
+  // previously used state + cleanup that cleared the pending onAnswer call.)
+  const doneRef = useRef(false);
+  const onAnswerRef = useRef(onAnswer);
+  useEffect(() => {
+    onAnswerRef.current = onAnswer;
+  }, [onAnswer]);
 
   useEffect(() => {
     setPlaced({});
     setSelectedItem(null);
     setFeedback({});
-    setDone(false);
+    doneRef.current = false;
   }, [challenge]);
 
   const allPlaced = Object.keys(placed).length === items.length;
   const allCorrect = items.every((it) => placed[it.id] === it.bucket);
 
   useEffect(() => {
-    if (allPlaced && !done) {
-      setDone(true);
+    if (allPlaced && !doneRef.current) {
+      doneRef.current = true;
       if (allCorrect) sfx.win();
       else sfx.wrong();
-      const t = setTimeout(() => onAnswer(allCorrect), 1100);
-      return () => clearTimeout(t);
+      // Note: we intentionally do NOT return a clearTimeout cleanup here.
+      // The doneRef guard already ensures we only schedule once, and clearing
+      // the timeout on subsequent re-renders would prevent onAnswer from
+      // ever firing (the bug we're fixing).
+      setTimeout(() => onAnswerRef.current(allCorrect), 1100);
     }
-  }, [allPlaced, allCorrect, done, onAnswer]);
+  }, [allPlaced, allCorrect]);
 
   function placeIn(bucket: number) {
-    if (selectedItem == null || done) return;
+    if (selectedItem == null || doneRef.current) return;
     const item = items[selectedItem];
     if (!item) return;
     sfx.click();
