@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { sfx, speak } from "../../lib/audio";
+import { PLAYER_NAME } from "../../config";
 import type { BossRapidChallenge } from "../../types";
 
 interface Props {
@@ -146,7 +147,7 @@ export function BossBattle({ challenge, onComplete }: Props) {
       </div>
       {streak >= 3 && (
         <div className="rounded-full bg-yellow-300 px-4 py-1 text-sm font-extrabold text-yellow-900 animate-bouncey">
-          🔥 {streak}-streak combo! +bonus damage!
+          🔥 {PLAYER_NAME}'s {streak}-streak combo! +bonus damage!
         </div>
       )}
 
@@ -190,7 +191,9 @@ export function BossBattle({ challenge, onComplete }: Props) {
       </div>
       {done && (
         <p className="text-center text-2xl font-extrabold text-purple-700">
-          {bossHp <= 0 ? "TROLLGAR DEFEATED! 🎉" : "Time! Great job!"}
+          {bossHp <= 0
+            ? `${PLAYER_NAME} DEFEATED TROLLGAR! 🎉`
+            : `Time! Great job, ${PLAYER_NAME}!`}
         </p>
       )}
     </div>

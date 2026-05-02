@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { sfx } from "../lib/audio";
+import { PLAYER_NAME } from "../config";
 import type { Quest } from "../types";
 import { MultipleChoice } from "./challenges/MultipleChoice";
 import { ListenAndPick } from "./challenges/ListenAndPick";
@@ -117,6 +118,7 @@ export function QuestPlayer({ quest, onExit }: Props) {
             </h1>
             <p className="max-w-2xl text-xl font-semibold text-gray-700">{quest.tagline}</p>
             <div className="max-w-xl rounded-3xl bg-white/85 p-5 text-lg leading-relaxed text-gray-800 shadow-xl">
+              <p className="mb-2 font-extrabold text-purple-700">{PLAYER_NAME}, listen up!</p>
               {quest.intro}
             </div>
             <p className="text-sm font-bold text-gray-700">
@@ -130,7 +132,7 @@ export function QuestPlayer({ quest, onExit }: Props) {
               className="tile-shadow rounded-full bg-gradient-to-br from-pink-500 to-purple-600 px-10 py-5 text-2xl font-extrabold text-white transition hover:from-pink-400 hover:to-purple-500"
               type="button"
             >
-              Start Quest →
+              Let's go, {PLAYER_NAME}! →
             </button>
           </div>
         )}
@@ -188,7 +190,13 @@ export function QuestPlayer({ quest, onExit }: Props) {
             {showConfetti && <Confetti />}
             <HeroByName name={quest.hero} size={160} className="animate-bouncey" />
             <h2 className="text-5xl font-extrabold text-gray-900 glow">
-              {stars >= 2 ? "QUEST COMPLETE!" : "Good try!"}
+              {stars >= 3
+                ? `LEGENDARY, ${PLAYER_NAME}!`
+                : stars >= 2
+                  ? `AMAZING WORK, ${PLAYER_NAME}!`
+                  : stars >= 1
+                    ? `Nice try, ${PLAYER_NAME}!`
+                    : `Keep going, ${PLAYER_NAME}!`}
             </h2>
             <div className="flex gap-3">
               {[0, 1, 2].map((i) => (
@@ -202,7 +210,7 @@ export function QuestPlayer({ quest, onExit }: Props) {
               ))}
             </div>
             <p className="text-2xl font-bold text-gray-800">
-              You earned <span className="text-purple-700">{quest.reward}</span>!
+              {PLAYER_NAME}, you earned <span className="text-purple-700">{quest.reward}</span>!
             </p>
             <p className="text-lg font-semibold text-gray-700">
               Score: {correctCount.toFixed(0)} / {total} · Misses: {missCount}

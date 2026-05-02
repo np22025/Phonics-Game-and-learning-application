@@ -21,7 +21,7 @@ export const QUESTS: Quest[] = [
     title: "The Cheese Cave Rescue",
     tagline: "Trollgar locked the cheese! Use the CH sound to set it free.",
     intro:
-      "Trollgar the grumpy troll has trapped a giant wheel of cheddar in his Cheese Cave. The lock only opens for words with the CH sound. Save the cheese!",
+      "Trollgar the grumpy troll has trapped a giant wheel of cheddar in his Cheese Cave. The lock only opens for words with the CH sound. Manas, only YOU can save the cheese!",
     reward: "Golden Cheese Wheel",
     theme: "troll",
     hero: "troll",
@@ -158,7 +158,7 @@ export const QUESTS: Quest[] = [
     title: "Web-Slinger in SH-City",
     tagline: "Swing through SH-City and shush the noisy villains.",
     intro:
-      "The web-slinger is racing across SH-City rooftops. Hush the villains by clicking words with the SH sound. SHHHH!",
+      "The web-slinger needs a sidekick! Manas, swing across SH-City rooftops with him. Hush the villains by clicking words with the SH sound. SHHHH!",
     reward: "Hero Web-Cartridge",
     theme: "spider",
     hero: "spider",
@@ -1857,7 +1857,7 @@ export const QUESTS: Quest[] = [
     title: "Final Boss: Trollgar's Castle",
     tagline: "Rapid-fire showdown! How many can you beat in 60 seconds?",
     intro:
-      "Trollgar is back — and angrier than ever. He has 60 seconds of phonics riddles. Beat as many as you can! Each correct answer hurts him, each wrong answer heals him. Don't stop!",
+      "Trollgar is BACK, Manas — and angrier than ever. He has 60 seconds of phonics riddles. Beat as many as you can! Each correct answer hurts him, each wrong answer heals him. Don't stop, Manas!",
     reward: "Hero of Phonics — Trophy",
     theme: "troll",
     hero: "spider",

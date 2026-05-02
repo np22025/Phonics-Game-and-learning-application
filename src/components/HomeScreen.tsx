@@ -1,4 +1,5 @@
 import { sfx, speak } from "../lib/audio";
+import { PLAYER_NAME } from "../config";
 import type { PlayerProgress, Quest } from "../types";
 import { HeroByName, ThemeBackdrop } from "./Characters";
 
@@ -18,8 +19,11 @@ export function HomeScreen({ quests, lockedQuests, progress, dayNumber, onSelect
       <div className="mx-auto flex max-w-5xl flex-col gap-8 px-4 py-8">
         <header className="flex flex-wrap items-center justify-between gap-4">
           <div>
+            <p className="text-base font-bold text-purple-700 sm:text-lg">
+              Hi {PLAYER_NAME}! 👋
+            </p>
             <h1 className="text-4xl font-extrabold text-gray-900 glow sm:text-5xl">
-              Phonics Quest
+              {PLAYER_NAME}'s Phonics Quest
             </h1>
             <p className="mt-1 text-lg font-semibold text-gray-700">
               Day {dayNumber} of your adventure!
@@ -38,7 +42,7 @@ export function HomeScreen({ quests, lockedQuests, progress, dayNumber, onSelect
         <section className="rounded-3xl bg-white/85 p-6 shadow-xl backdrop-blur">
           <div className="flex flex-col items-center gap-3 text-center">
             <p className="text-2xl font-bold text-gray-800">
-              {quests.length} quest{quests.length === 1 ? "" : "s"} unlocked today!
+              {quests.length} quest{quests.length === 1 ? "" : "s"} ready for you, {PLAYER_NAME}!
             </p>
             <p className="text-base text-gray-600">
               Tap a quest to begin. Earn ★ stars by answering correctly.
@@ -63,7 +67,7 @@ export function HomeScreen({ quests, lockedQuests, progress, dayNumber, onSelect
                 key={q.id}
                 onClick={() => {
                   sfx.whoosh();
-                  speak(q.title, { rate: 1 });
+                  speak(`${PLAYER_NAME}, let's go! ${q.title}`, { rate: 1 });
                   onSelect(q);
                 }}
                 type="button"
