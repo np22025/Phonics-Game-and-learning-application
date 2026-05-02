@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { motion } from "framer-motion";
 import { sfx, speak } from "../../lib/audio";
 import type { WordSortChallenge } from "../../types";
 
@@ -9,10 +10,11 @@ interface Props {
   totalQuestions: number;
 }
 
-// Word sort uses click-to-place rather than drag and drop because drag and drop
-// is finicky on touch devices. Players click a word, then click a bucket.
 export function WordSort({ challenge, onAnswer, questionNumber, totalQuestions }: Props) {
-  const items = useMemo(() => challenge.items.map((it, idx) => ({ ...it, id: idx })), [challenge]);
+  const items = useMemo(
+    () => challenge.items.map((it, idx) => ({ ...it, id: idx })),
+    [challenge]
+  );
   const [placed, setPlaced] = useState<Record<number, number>>({});
   const [selectedItem, setSelectedItem] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<Record<number, "right" | "wrong">>({});
@@ -31,11 +33,8 @@ export function WordSort({ challenge, onAnswer, questionNumber, totalQuestions }
   useEffect(() => {
     if (allPlaced && !done) {
       setDone(true);
-      if (allCorrect) {
-        sfx.win();
-      } else {
-        sfx.wrong();
-      }
+      if (allCorrect) sfx.win();
+      else sfx.wrong();
       const t = setTimeout(() => onAnswer(allCorrect), 1100);
       return () => clearTimeout(t);
     }
@@ -52,77 +51,87 @@ export function WordSort({ challenge, onAnswer, questionNumber, totalQuestions }
   }
 
   return (
-    <div className="flex w-full max-w-3xl flex-col items-center gap-5 rounded-3xl bg-white/90 p-6 shadow-xl backdrop-blur sm:p-8">
-      <div className="flex w-full items-center justify-between text-sm font-bold text-gray-500">
-        <span>
-          Question {questionNumber} / {totalQuestions}
-        </span>
-        <span>Tap a word, then tap a basket.</span>
+    <motion.div
+      key={questionNumber}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="card w-full max-w-3xl p-6 sm:p-8"
+    >
+      <div className="mb-4 flex items-center justify-between text-sm font-bold text-ink-500">
+        <span>{questionNumber} / {totalQuestions}</span>
+        <span>📦 Tap a word, then a basket</span>
       </div>
-      <h2 className="text-center text-2xl font-bold text-gray-800 sm:text-3xl">{challenge.prompt}</h2>
+      <h2 className="mb-5 text-center text-2xl font-extrabold text-ink-900 sm:text-3xl">
+        {challenge.prompt}
+      </h2>
 
-      {/* Buckets */}
-      <div className="grid w-full grid-cols-2 gap-3 sm:gap-5">
+      <div className="mb-5 grid grid-cols-2 gap-3 sm:gap-4">
         {challenge.buckets.map((label, bIdx) => {
           const inside = items.filter((it) => placed[it.id] === bIdx);
           return (
-            <button
+            <motion.button
               key={bIdx}
               onClick={() => placeIn(bIdx)}
               type="button"
-              className="tile-shadow flex min-h-[140px] flex-col items-center gap-2 rounded-3xl border-4 border-dashed border-purple-400 bg-purple-50 p-4 text-center text-xl font-extrabold text-purple-900 transition hover:bg-purple-100"
+              whileHover={selectedItem != null ? { scale: 1.02 } : {}}
+              className="flex min-h-[150px] flex-col items-center gap-2 rounded-3xl border-4 border-dashed border-accent-400 bg-accent-50 p-4 text-center transition hover:bg-accent-100"
             >
-              <span className="rounded-full bg-purple-500 px-4 py-1 text-white">{label}</span>
+              <span className="rounded-full bg-accent-600 px-4 py-1 text-base font-extrabold text-white sm:text-lg">
+                {label}
+              </span>
               <div className="flex flex-wrap justify-center gap-2">
                 {inside.map((it) => (
-                  <span
+                  <motion.span
                     key={it.id}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
                     className={`rounded-xl px-3 py-1 text-base font-bold ${
                       feedback[it.id] === "right"
-                        ? "bg-green-300 text-green-900"
+                        ? "bg-emerald-200 text-emerald-900"
                         : feedback[it.id] === "wrong"
-                          ? "bg-red-300 text-red-900"
-                          : "bg-white text-gray-800"
+                          ? "bg-rose-200 text-rose-900"
+                          : "bg-white text-ink-800"
                     }`}
                   >
                     {it.word}
-                  </span>
+                  </motion.span>
                 ))}
               </div>
-            </button>
+            </motion.button>
           );
         })}
       </div>
 
-      {/* Tray */}
-      <div className="flex w-full flex-wrap justify-center gap-2 rounded-3xl bg-amber-50 p-4">
+      <div className="flex flex-wrap justify-center gap-2 rounded-3xl bg-amber-50 p-4">
         {items.map((it, idx) => {
           const isPlaced = placed[it.id] !== undefined;
           const isSelected = selectedItem === idx;
           if (isPlaced) return null;
           return (
-            <button
+            <motion.button
               key={it.id}
               onClick={() => {
                 sfx.click();
                 speak(it.word);
                 setSelectedItem(isSelected ? null : idx);
               }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               type="button"
               className={`rounded-xl border-2 px-4 py-2 text-xl font-bold transition ${
                 isSelected
-                  ? "scale-110 border-orange-500 bg-orange-300 text-white"
-                  : "border-orange-300 bg-white text-gray-800 hover:bg-orange-100"
+                  ? "scale-110 border-accent-600 bg-accent-500 text-white shadow-elev"
+                  : "border-amber-300 bg-white text-ink-800 hover:bg-amber-100"
               }`}
             >
               {it.word}
-            </button>
+            </motion.button>
           );
         })}
         {Object.keys(placed).length === items.length && (
-          <p className="text-base font-bold text-gray-500">All placed!</p>
+          <p className="text-base font-bold text-ink-500">All placed!</p>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { sfx } from "../lib/audio";
 import { PLAYER_NAME } from "../config";
+import { CHARACTERS } from "../data/characters";
 import type { Quest } from "../types";
 import { MultipleChoice } from "./challenges/MultipleChoice";
 import { ListenAndPick } from "./challenges/ListenAndPick";
@@ -8,8 +10,11 @@ import { WordSort } from "./challenges/WordSort";
 import { SentenceFill } from "./challenges/SentenceFill";
 import { TrueFalse } from "./challenges/TrueFalse";
 import { BossBattle } from "./challenges/BossBattle";
-import { HeroByName, ThemeBackdrop } from "./Characters";
+import { CharacterImage } from "./CharacterImage";
 import { Confetti } from "./Confetti";
+import { Particles } from "./Particles";
+import { RescueProgress } from "./RescueProgress";
+import { FloatingFeedback, pickNice, pickTry } from "./Feedback";
 
 interface Props {
   quest: Quest;
@@ -24,6 +29,11 @@ export function QuestPlayer({ quest, onExit }: Props) {
   const [correctCount, setCorrectCount] = useState(0);
   const [missCount, setMissCount] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [floatFeedback, setFloatFeedback] = useState<{
+    show: boolean;
+    type: "correct" | "wrong";
+    message: string;
+  }>({ show: false, type: "correct", message: "" });
 
   const total = quest.challenges.length;
   const challenge = quest.challenges[idx];
@@ -37,9 +47,21 @@ export function QuestPlayer({ quest, onExit }: Props) {
     return 0;
   }, [correctCount, total]);
 
+  // Rescue progress: scales with correctly-answered challenges.
+  const rescueProgress = total === 0 ? 0 : correctCount / total;
+  const rescued = phase === "summary" && stars >= 1;
+
   function handleAnswer(correct: boolean) {
-    if (correct) setCorrectCount((c) => c + 1);
-    else setMissCount((m) => m + 1);
+    if (correct) {
+      setCorrectCount((c) => c + 1);
+      setFloatFeedback({ show: true, type: "correct", message: pickNice() });
+    } else {
+      setMissCount((m) => m + 1);
+      setFloatFeedback({ show: true, type: "wrong", message: pickTry() });
+    }
+    // Auto-hide feedback pill after a moment
+    setTimeout(() => setFloatFeedback((f) => ({ ...f, show: false })), 1100);
+
     if (idx + 1 >= total) {
       setPhase("summary");
     } else {
@@ -48,22 +70,17 @@ export function QuestPlayer({ quest, onExit }: Props) {
   }
 
   function handleBossComplete(score: number, totalAnswered: number) {
-    // Boss counts as a single challenge worth up to 1.0 of stars
     setCorrectCount((c) => c + Math.min(1, score / Math.max(1, totalAnswered)));
     setPhase("summary");
   }
 
   useEffect(() => {
     if (phase === "summary") {
+      if (stars >= 1) sfx.rescue();
       if (stars >= 2) {
-        sfx.win();
         setShowConfetti(true);
-        const t = setTimeout(() => setShowConfetti(false), 3000);
+        const t = setTimeout(() => setShowConfetti(false), 3500);
         return () => clearTimeout(t);
-      } else if (stars === 1) {
-        sfx.levelUp();
-      } else {
-        sfx.levelUp();
       }
     }
   }, [phase, stars]);
@@ -77,171 +94,250 @@ export function QuestPlayer({ quest, onExit }: Props) {
           ? "theme-explorer"
           : "theme-magic";
 
+  const charDef = quest.rescueCharacter ? CHARACTERS[quest.rescueCharacter] : null;
+
   return (
     <div className={`relative min-h-screen w-full ${themeClass}`}>
-      <ThemeBackdrop theme={quest.theme} />
-      <div className="mx-auto flex min-h-screen max-w-4xl flex-col items-center gap-6 px-4 py-6">
-        {/* top bar */}
-        <div className="flex w-full items-center justify-between">
+      <Particles count={14} />
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-4xl flex-col items-center gap-6 px-4 py-6">
+        {/* Top bar */}
+        <div className="flex w-full items-center justify-between gap-3">
           <button
             onClick={() => {
               sfx.click();
               onExit({ stars, completed: phase === "summary" });
             }}
-            className="rounded-full bg-white/80 px-4 py-2 text-sm font-bold text-gray-800 shadow hover:bg-white"
+            className="btn-ghost"
             type="button"
           >
             ← Map
           </button>
           {phase === "playing" && (
-            <div className="flex flex-1 items-center px-4">
-              <div className="h-3 w-full overflow-hidden rounded-full bg-white/60">
-                <div
-                  className="h-full bg-gradient-to-r from-emerald-400 to-blue-500 transition-all duration-300"
-                  style={{ width: `${((idx) / total) * 100}%` }}
+            <div className="flex flex-1 items-center px-2">
+              <div className="h-3 w-full overflow-hidden rounded-full bg-white/15">
+                <motion.div
+                  className="h-full rounded-full bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500"
+                  animate={{ width: `${(idx / total) * 100}%` }}
+                  transition={{ type: "spring", stiffness: 120, damping: 22 }}
                 />
               </div>
             </div>
           )}
           {phase === "playing" && (
-            <span className="rounded-full bg-white/80 px-3 py-1 text-sm font-bold text-gray-800 shadow">
+            <span className="rounded-full bg-white/15 px-3 py-1.5 text-sm font-extrabold text-white backdrop-blur-md">
               ✓ {correctCount} · ✗ {missCount}
             </span>
           )}
         </div>
 
-        {phase === "intro" && (
-          <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
-            <HeroByName name={quest.hero} size={160} className="animate-bouncey" />
-            <h1 className="max-w-3xl text-4xl font-extrabold text-gray-900 glow sm:text-5xl">
-              {quest.title}
-            </h1>
-            <p className="max-w-2xl text-xl font-semibold text-gray-700">{quest.tagline}</p>
-            <div className="max-w-xl rounded-3xl bg-white/85 p-5 text-lg leading-relaxed text-gray-800 shadow-xl">
-              <p className="mb-2 font-extrabold text-purple-700">{PLAYER_NAME}, listen up!</p>
-              {quest.intro}
-            </div>
-            <p className="text-sm font-bold text-gray-700">
-              {total} challenge{total === 1 ? "" : "s"} · Reward: {quest.reward}
-            </p>
-            <button
-              onClick={() => {
-                sfx.whoosh();
-                setPhase("playing");
-              }}
-              className="tile-shadow rounded-full bg-gradient-to-br from-pink-500 to-purple-600 px-10 py-5 text-2xl font-extrabold text-white transition hover:from-pink-400 hover:to-purple-500"
-              type="button"
+        {/* Rescue progress (always visible during play if quest has a character) */}
+        {phase === "playing" && quest.rescueCharacter && (
+          <RescueProgress
+            characterId={quest.rescueCharacter}
+            progress={rescueProgress}
+            rescued={false}
+          />
+        )}
+
+        {/* Floating feedback pill */}
+        <FloatingFeedback show={floatFeedback.show} type={floatFeedback.type} message={floatFeedback.message} />
+
+        {/* Phase content */}
+        <AnimatePresence mode="wait">
+          {phase === "intro" && (
+            <motion.div
+              key="intro"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              className="flex flex-1 flex-col items-center justify-center gap-6 text-center"
             >
-              Let's go, {PLAYER_NAME}! →
-            </button>
-          </div>
-        )}
-
-        {phase === "playing" && (
-          <div className="flex w-full flex-1 items-center justify-center">
-            {challenge.type === "multiple-choice" && (
-              <MultipleChoice
-                challenge={challenge}
-                onAnswer={handleAnswer}
-                questionNumber={idx + 1}
-                totalQuestions={total}
-              />
-            )}
-            {challenge.type === "listen-and-pick" && (
-              <ListenAndPick
-                challenge={challenge}
-                onAnswer={handleAnswer}
-                questionNumber={idx + 1}
-                totalQuestions={total}
-              />
-            )}
-            {challenge.type === "word-sort" && (
-              <WordSort
-                challenge={challenge}
-                onAnswer={handleAnswer}
-                questionNumber={idx + 1}
-                totalQuestions={total}
-              />
-            )}
-            {challenge.type === "sentence-fill" && (
-              <SentenceFill
-                challenge={challenge}
-                onAnswer={handleAnswer}
-                questionNumber={idx + 1}
-                totalQuestions={total}
-              />
-            )}
-            {challenge.type === "true-false" && (
-              <TrueFalse
-                challenge={challenge}
-                onAnswer={handleAnswer}
-                questionNumber={idx + 1}
-                totalQuestions={total}
-              />
-            )}
-            {challenge.type === "boss-rapid" && (
-              <BossBattle challenge={challenge} onComplete={handleBossComplete} />
-            )}
-          </div>
-        )}
-
-        {phase === "summary" && (
-          <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
-            {showConfetti && <Confetti />}
-            <HeroByName name={quest.hero} size={160} className="animate-bouncey" />
-            <h2 className="text-5xl font-extrabold text-gray-900 glow">
-              {stars >= 3
-                ? `LEGENDARY, ${PLAYER_NAME}!`
-                : stars >= 2
-                  ? `AMAZING WORK, ${PLAYER_NAME}!`
-                  : stars >= 1
-                    ? `Nice try, ${PLAYER_NAME}!`
-                    : `Keep going, ${PLAYER_NAME}!`}
-            </h2>
-            <div className="flex gap-3">
-              {[0, 1, 2].map((i) => (
-                <span
-                  key={i}
-                  className={`text-6xl ${i < stars ? "animate-pop text-yellow-400" : "text-gray-300"}`}
-                  style={{ animationDelay: `${i * 0.2}s` }}
-                >
-                  ★
-                </span>
-              ))}
-            </div>
-            <p className="text-2xl font-bold text-gray-800">
-              {PLAYER_NAME}, you earned <span className="text-purple-700">{quest.reward}</span>!
-            </p>
-            <p className="text-lg font-semibold text-gray-700">
-              Score: {correctCount.toFixed(0)} / {total} · Misses: {missCount}
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              <button
-                onClick={() => {
-                  sfx.click();
-                  onExit({ stars, completed: true });
-                }}
-                className="tile-shadow rounded-full bg-gradient-to-br from-emerald-400 to-teal-600 px-8 py-4 text-xl font-extrabold text-white"
-                type="button"
+              {quest.rescueCharacter ? (
+                <CharacterImage
+                  characterId={quest.rescueCharacter}
+                  size={180}
+                  className="drop-shadow-2xl"
+                />
+              ) : null}
+              <h1 className="max-w-3xl text-4xl font-black leading-tight text-white sm:text-5xl lg:text-6xl">
+                {quest.title}
+              </h1>
+              <p className="max-w-2xl text-xl font-semibold text-white/85">{quest.tagline}</p>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="card max-w-xl p-6 text-lg leading-relaxed text-ink-800"
               >
-                Back to Map
-              </button>
-              <button
+                <p className="mb-2 font-extrabold text-accent-700">{PLAYER_NAME}, listen up!</p>
+                {quest.intro}
+              </motion.div>
+              <p className="text-sm font-bold text-white/70">
+                {total} challenge{total === 1 ? "" : "s"} · Reward: {quest.reward}
+              </p>
+              <motion.button
                 onClick={() => {
-                  sfx.click();
-                  setIdx(0);
-                  setCorrectCount(0);
-                  setMissCount(0);
+                  sfx.whoosh();
                   setPhase("playing");
                 }}
-                className="tile-shadow rounded-full bg-white px-8 py-4 text-xl font-extrabold text-gray-800"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="btn-primary"
                 type="button"
               >
-                Play Again
-              </button>
-            </div>
-          </div>
-        )}
+                Let's go, {PLAYER_NAME}! →
+              </motion.button>
+            </motion.div>
+          )}
+
+          {phase === "playing" && (
+            <motion.div
+              key={`play-${idx}`}
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -30 }}
+              transition={{ duration: 0.3 }}
+              className="flex w-full flex-1 items-center justify-center"
+            >
+              {challenge.type === "multiple-choice" && (
+                <MultipleChoice
+                  challenge={challenge}
+                  onAnswer={handleAnswer}
+                  questionNumber={idx + 1}
+                  totalQuestions={total}
+                />
+              )}
+              {challenge.type === "listen-and-pick" && (
+                <ListenAndPick
+                  challenge={challenge}
+                  onAnswer={handleAnswer}
+                  questionNumber={idx + 1}
+                  totalQuestions={total}
+                />
+              )}
+              {challenge.type === "word-sort" && (
+                <WordSort
+                  challenge={challenge}
+                  onAnswer={handleAnswer}
+                  questionNumber={idx + 1}
+                  totalQuestions={total}
+                />
+              )}
+              {challenge.type === "sentence-fill" && (
+                <SentenceFill
+                  challenge={challenge}
+                  onAnswer={handleAnswer}
+                  questionNumber={idx + 1}
+                  totalQuestions={total}
+                />
+              )}
+              {challenge.type === "true-false" && (
+                <TrueFalse
+                  challenge={challenge}
+                  onAnswer={handleAnswer}
+                  questionNumber={idx + 1}
+                  totalQuestions={total}
+                />
+              )}
+              {challenge.type === "boss-rapid" && (
+                <BossBattle challenge={challenge} onComplete={handleBossComplete} />
+              )}
+            </motion.div>
+          )}
+
+          {phase === "summary" && (
+            <motion.div
+              key="summary"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: "spring", stiffness: 200, damping: 22 }}
+              className="flex flex-1 flex-col items-center justify-center gap-6 text-center"
+            >
+              {showConfetti && <Confetti />}
+              {quest.rescueCharacter && (
+                <RescueProgress
+                  characterId={quest.rescueCharacter}
+                  progress={1}
+                  rescued={rescued}
+                />
+              )}
+              <motion.h2
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="text-4xl font-black text-white sm:text-5xl lg:text-6xl"
+              >
+                {stars >= 3
+                  ? `LEGENDARY, ${PLAYER_NAME}!`
+                  : stars >= 2
+                    ? `AMAZING, ${PLAYER_NAME}!`
+                    : stars >= 1
+                      ? `Nice work, ${PLAYER_NAME}!`
+                      : `Keep going, ${PLAYER_NAME}!`}
+              </motion.h2>
+
+              <div className="flex gap-3">
+                {[0, 1, 2].map((i) => (
+                  <motion.span
+                    key={i}
+                    initial={{ scale: 0, rotate: -45 }}
+                    animate={{
+                      scale: i < stars ? 1 : 0.6,
+                      rotate: 0,
+                    }}
+                    transition={{
+                      delay: 0.3 + i * 0.18,
+                      type: "spring",
+                      stiffness: 250,
+                      damping: 14,
+                    }}
+                    className={`text-7xl ${i < stars ? "star-3d" : "text-white/20"}`}
+                  >
+                    ★
+                  </motion.span>
+                ))}
+              </div>
+              <p className="text-2xl font-bold text-white">
+                {PLAYER_NAME}, you earned <span className="text-amber-300">{quest.reward}</span>!
+              </p>
+              {charDef && rescued && (
+                <p className="text-lg font-semibold text-white/85">"{charDef.rescueCheer}"</p>
+              )}
+              <p className="text-base font-semibold text-white/75">
+                {Math.round(correctCount)} / {total} correct · {missCount} miss{missCount === 1 ? "" : "es"}
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                <motion.button
+                  onClick={() => {
+                    sfx.click();
+                    onExit({ stars, completed: true });
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn-primary"
+                  type="button"
+                >
+                  Back to Map
+                </motion.button>
+                <motion.button
+                  onClick={() => {
+                    sfx.click();
+                    setIdx(0);
+                    setCorrectCount(0);
+                    setMissCount(0);
+                    setPhase("playing");
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn-ghost"
+                  type="button"
+                >
+                  Play Again
+                </motion.button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { sfx, speak } from "../../lib/audio";
 import { PLAYER_NAME } from "../../config";
 import type { BossRapidChallenge } from "../../types";
@@ -8,9 +9,6 @@ interface Props {
   onComplete: (correctCount: number, totalAnswered: number) => void;
 }
 
-// Boss battle: rapid-fire questions for `durationSec` seconds. Each correct
-// answer damages the boss (HP bar decreases); each wrong answer heals him.
-// At the end, score is forwarded as success based on correctCount > 0.
 export function BossBattle({ challenge, onComplete }: Props) {
   const [timeLeft, setTimeLeft] = useState(challenge.durationSec);
   const [bossHp, setBossHp] = useState(100);
@@ -22,10 +20,12 @@ export function BossBattle({ challenge, onComplete }: Props) {
   const [picked, setPicked] = useState<number | null>(null);
   const [locked, setLocked] = useState(false);
   const [done, setDone] = useState(false);
+
   const order = useMemo(() => {
-    // Pre-shuffle a long sequence of question indices so boss battle feels random
-    // but reproducible per mount.
-    const arr = Array.from({ length: challenge.questions.length * 4 }, (_, i) => i % challenge.questions.length);
+    const arr = Array.from(
+      { length: challenge.questions.length * 4 },
+      (_, i) => i % challenge.questions.length
+    );
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [arr[i], arr[j]] = [arr[j], arr[i]];
@@ -37,8 +37,6 @@ export function BossBattle({ challenge, onComplete }: Props) {
   const scoreRef = useRef(0);
   const onCompleteRef = useRef(onComplete);
 
-  // Keep refs in sync so the timer effect can read latest values without
-  // re-running and resetting its own setTimeout.
   useEffect(() => {
     scoreRef.current = score;
   }, [score]);
@@ -46,8 +44,6 @@ export function BossBattle({ challenge, onComplete }: Props) {
     onCompleteRef.current = onComplete;
   }, [onComplete]);
 
-  // Tick down the timer every second. Effect deps are intentionally minimal —
-  // we read score/onComplete via refs so a click doesn't reset the countdown.
   useEffect(() => {
     if (done) return;
     if (timeLeft <= 0) {
@@ -64,7 +60,6 @@ export function BossBattle({ challenge, onComplete }: Props) {
     return () => clearTimeout(t);
   }, [timeLeft, done]);
 
-  // Boss is defeated early?
   useEffect(() => {
     if (bossHp <= 0 && !done) {
       setDone(true);
@@ -106,7 +101,6 @@ export function BossBattle({ challenge, onComplete }: Props) {
     }, 600);
   }
 
-  // Auto-speak prompts that include audio cues.
   useEffect(() => {
     if (q.speak) {
       const t = setTimeout(() => speak(q.speak!), 200);
@@ -115,87 +109,105 @@ export function BossBattle({ challenge, onComplete }: Props) {
   }, [questionIdx, q]);
 
   return (
-    <div className="relative flex w-full max-w-3xl flex-col items-center gap-5 rounded-3xl bg-white/90 p-6 shadow-2xl backdrop-blur sm:p-8">
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="card relative w-full max-w-3xl p-6 sm:p-8"
+    >
       {/* HUD */}
-      <div className="flex w-full items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
+      <div className="mb-4 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-2">
           <span className="text-3xl">⏱️</span>
           <span
-            className={`text-3xl font-extrabold ${
-              timeLeft <= 5 ? "animate-pulse text-red-600" : "text-gray-800"
+            className={`text-3xl font-black ${
+              timeLeft <= 5 ? "animate-pulse text-rose-600" : "text-ink-900"
             }`}
           >
             {timeLeft}s
           </span>
         </div>
-        <div className="flex flex-1 flex-col items-stretch gap-1">
-          <div className="flex items-center justify-between text-sm font-bold text-red-700">
+        <div className="flex flex-1 flex-col items-stretch gap-1 px-4">
+          <div className="flex items-center justify-between text-sm font-bold text-rose-700">
             <span>Trollgar HP</span>
             <span>{bossHp}</span>
           </div>
-          <div className="h-4 w-full overflow-hidden rounded-full border border-red-700 bg-red-100">
-            <div
-              className="h-full bg-gradient-to-r from-red-500 to-rose-700 transition-all duration-300"
-              style={{ width: `${bossHp}%` }}
+          <div className="h-4 w-full overflow-hidden rounded-full border border-rose-700 bg-rose-100">
+            <motion.div
+              className="h-full bg-gradient-to-r from-rose-500 to-rose-700"
+              animate={{ width: `${bossHp}%` }}
+              transition={{ type: "spring", stiffness: 180, damping: 22 }}
             />
           </div>
         </div>
         <div className="flex flex-col items-end">
-          <span className="text-sm font-bold text-gray-500">SCORE</span>
-          <span className="text-3xl font-extrabold text-purple-700">{score}</span>
+          <span className="text-xs font-bold text-ink-500">SCORE</span>
+          <span className="text-3xl font-black text-accent-700">{score}</span>
         </div>
       </div>
-      {streak >= 3 && (
-        <div className="rounded-full bg-yellow-300 px-4 py-1 text-sm font-extrabold text-yellow-900 animate-bouncey">
-          🔥 {PLAYER_NAME}'s {streak}-streak combo! +bonus damage!
-        </div>
-      )}
 
-      {/* Question */}
-      <h2 className="text-center text-xl font-bold text-gray-800 sm:text-2xl">{q.prompt}</h2>
+      <AnimatePresence>
+        {streak >= 3 && (
+          <motion.div
+            initial={{ y: -10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="mb-3 inline-block rounded-full bg-gradient-to-r from-amber-300 to-orange-500 px-4 py-1 text-sm font-black text-white shadow-elev"
+          >
+            🔥 {PLAYER_NAME}'s {streak}-streak combo!
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* Floating hit/miss feedback */}
-      {feedback && (
-        <span
-          key={feedbackKey}
-          className={`absolute right-8 top-24 text-3xl font-extrabold animate-float-up ${
-            feedback === "hit" ? "text-green-600" : "text-red-600"
-          }`}
-          aria-hidden
-        >
-          {feedback === "hit" ? "+8 HIT!" : "MISS"}
-        </span>
-      )}
+      <h2 className="mb-5 text-center text-xl font-extrabold text-ink-900 sm:text-2xl">
+        {q.prompt}
+      </h2>
 
-      <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-3">
+      <AnimatePresence>
+        {feedback && (
+          <motion.span
+            key={feedbackKey}
+            initial={{ y: 0, opacity: 1, scale: 0.8 }}
+            animate={{ y: -60, opacity: 0, scale: 1.2 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+            className={`absolute right-8 top-32 text-3xl font-black ${
+              feedback === "hit" ? "text-emerald-600" : "text-rose-600"
+            }`}
+            aria-hidden
+          >
+            {feedback === "hit" ? "+8 HIT!" : "MISS"}
+          </motion.span>
+        )}
+      </AnimatePresence>
+
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         {q.options.map((opt, idx) => {
           const isPicked = picked === idx;
           const showResult = locked && isPicked;
-          const cls = showResult
-            ? opt.correct
-              ? "bg-green-400 text-white animate-pop"
-              : "bg-red-400 text-white animate-shake"
-            : "bg-gradient-to-br from-orange-300 to-red-400 hover:from-orange-200 hover:to-red-300 text-gray-900";
+          const className = `option-tile ${showResult ? (opt.correct ? "correct" : "wrong") : ""}`;
           return (
-            <button
+            <motion.button
               key={idx}
               onClick={() => pick(idx)}
               disabled={locked}
               type="button"
-              className={`tile-shadow rounded-2xl px-4 py-5 text-xl font-bold transition-transform sm:text-2xl ${cls}`}
+              className={className}
+              whileHover={locked ? {} : { y: -3, scale: 1.02 }}
+              whileTap={locked ? {} : { scale: 0.96 }}
             >
               {opt.text}
-            </button>
+            </motion.button>
           );
         })}
       </div>
+
       {done && (
-        <p className="text-center text-2xl font-extrabold text-purple-700">
+        <p className="mt-5 text-center text-2xl font-black text-accent-700">
           {bossHp <= 0
             ? `${PLAYER_NAME} DEFEATED TROLLGAR! 🎉`
             : `Time! Great job, ${PLAYER_NAME}!`}
         </p>
       )}
-    </div>
+    </motion.div>
   );
 }

@@ -4,13 +4,16 @@ A daily phonics adventure game for third graders — themed around grumpy trolls
 
 ## What's inside
 
-- 15 quests on Day 1 covering: CH, SH, CH-vs-SH, TH, WH, PH, silent letters, magic E, vowel teams, R-controlled vowels, diphthongs, sight words, suffixes, compound words, and a 60-second boss battle. ~150 challenges total.
+- 15 quests on Day 1 covering: CH, SH, CH-vs-SH, TH, WH, PH, silent letters, magic E, vowel teams, R-controlled vowels, diphthongs, sight words, suffixes, compound words, and a 60-second boss battle. ~190 challenges total.
+- Per-quest **rescue mechanic** — each quest stars a character (Chase, Skye, Marshall, Rubble, Everest, Rocky, Blippi) trapped in a cage / cliff / ice / mud / bubble / vines. Correct answers free them.
 - 6 challenge formats (multiple choice, listen-and-pick, sentence-fill, true/false, word sort, boss rapid-fire) so gameplay never feels repetitive.
+- Modern visual design — Outfit / Plus Jakarta Sans typography, glassmorphism cards, ambient particle backgrounds, deep gradient backdrops.
+- Framer Motion animations — spring physics on every interaction, staggered card reveals, screen transitions, character bounce, sparkle bursts.
+- Duolingo-style audio — layered chimes with reverb tails for correct, soft thud for wrong, triumphant arpeggios for level-up. All procedural — no audio files.
 - Speech synthesis pronounces every word using the Web Speech API.
-- Procedural sound effects via Web Audio API (no external audio files).
 - localStorage progress: streaks, stars, completed quests persist across visits.
 - Daily unlock system — quests have an `unlockDay` so you can ship 1–2 new quests every day.
-- Custom SVG mascots inspired by Poppy Playtime, Spider-Man, and Blippi (originals — no copyrighted art).
+- Drop-in character images — put PNGs in `public/characters/` to use your own art (see `CHARACTERS.md`).
 
 ## Quickstart
 

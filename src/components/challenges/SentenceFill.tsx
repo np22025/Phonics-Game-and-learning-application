@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { sfx, speak } from "../../lib/audio";
 import type { SentenceFillChallenge } from "../../types";
 
@@ -28,49 +29,55 @@ export function SentenceFill({ challenge, onAnswer, questionNumber, totalQuestio
     if (correct) sfx.correct();
     else sfx.wrong();
     speak(`${before} ${challenge.options[idx].text} ${after}`);
-    setTimeout(() => onAnswer(correct), 1300);
+    setTimeout(() => onAnswer(correct), 1500);
   }
 
   return (
-    <div className="flex w-full max-w-2xl flex-col items-center gap-6 rounded-3xl bg-white/90 p-6 shadow-xl backdrop-blur sm:p-8">
-      <div className="flex w-full items-center justify-between text-sm font-bold text-gray-500">
-        <span>
-          Question {questionNumber} / {totalQuestions}
-        </span>
-        <span>Fill in the blank</span>
+    <motion.div
+      key={questionNumber}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="card w-full max-w-2xl p-6 sm:p-8"
+    >
+      <div className="mb-4 flex items-center justify-between text-sm font-bold text-ink-500">
+        <span>{questionNumber} / {totalQuestions}</span>
+        <span>📝 Fill in the blank</span>
       </div>
-      <p className="text-center text-2xl font-bold leading-relaxed text-gray-800 sm:text-3xl">
+      <p className="mb-6 text-center text-2xl font-extrabold leading-relaxed text-ink-900 sm:text-3xl">
         {before}
-        <span className="mx-2 inline-block min-w-[80px] rounded-md border-b-4 border-purple-500 bg-purple-100 px-3 align-middle">
-          {picked !== null ? challenge.options[picked].text : "____"}
+        <span className="mx-2 inline-block min-w-[100px] rounded-md border-b-4 border-accent-500 bg-accent-100 px-3 align-middle text-accent-800">
+          {picked !== null ? challenge.options[picked].text : "_____"}
         </span>
         {after}
       </p>
-      <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         {challenge.options.map((opt, idx) => {
           const isPicked = picked === idx;
           const showResult = locked && isPicked;
-          const cls = showResult
-            ? opt.correct
-              ? "bg-green-400 text-white animate-pop"
-              : "bg-red-400 text-white animate-shake"
-            : "bg-gradient-to-br from-emerald-300 to-teal-400 hover:from-emerald-200 hover:to-teal-300 text-gray-900";
+          const className = `option-tile ${
+            showResult ? (opt.correct ? "correct" : "wrong") : ""
+          }`;
           return (
-            <button
+            <motion.button
               key={idx}
               onClick={() => pick(idx)}
               disabled={locked}
               type="button"
-              className={`tile-shadow rounded-2xl px-4 py-4 text-xl font-bold transition-transform sm:text-2xl ${cls}`}
+              className={className}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.05 * idx }}
+              whileHover={locked ? {} : { y: -4, scale: 1.02 }}
+              whileTap={locked ? {} : { scale: 0.96 }}
             >
               {opt.text}
-            </button>
+            </motion.button>
           );
         })}
       </div>
       {challenge.hint && (
-        <p className="text-sm italic text-gray-500">Tip: {challenge.hint}</p>
+        <p className="mt-5 text-center text-sm italic text-ink-500">💡 {challenge.hint}</p>
       )}
-    </div>
+    </motion.div>
   );
 }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { sfx, speak } from "../../lib/audio";
 import type { TrueFalseChallenge } from "../../types";
 
@@ -31,74 +32,87 @@ export function TrueFalse({ challenge, onAnswer, questionNumber, totalQuestions 
     const correct = answer === challenge.answer;
     if (correct) sfx.correct();
     else sfx.wrong();
-    setTimeout(() => onAnswer(correct), 900);
+    setTimeout(() => onAnswer(correct), 1100);
   }
 
   return (
-    <div className="flex w-full max-w-2xl flex-col items-center gap-6 rounded-3xl bg-white/90 p-6 shadow-xl backdrop-blur sm:p-8">
-      <div className="flex w-full items-center justify-between text-sm font-bold text-gray-500">
-        <span>
-          Question {questionNumber} / {totalQuestions}
-        </span>
+    <motion.div
+      key={questionNumber}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="card w-full max-w-2xl p-6 sm:p-8"
+    >
+      <div className="mb-4 flex items-center justify-between text-sm font-bold text-ink-500">
+        <span>{questionNumber} / {totalQuestions}</span>
         {challenge.speak && (
           <button
             onClick={() => {
               sfx.click();
               speak(challenge.speak!);
             }}
-            className="rounded-full bg-purple-100 px-3 py-1 text-purple-700 transition hover:bg-purple-200"
+            className="rounded-full bg-accent-100 px-4 py-1.5 text-accent-700 hover:bg-accent-200"
             type="button"
           >
-            Hear it again
+            🔊 Hear it again
           </button>
         )}
       </div>
-      <h2 className="text-center text-2xl font-bold text-gray-800 sm:text-3xl">{challenge.prompt}</h2>
-      <div className="grid w-full grid-cols-2 gap-4">
-        <button
+      <h2 className="mb-6 text-center text-2xl font-extrabold text-ink-900 sm:text-3xl">
+        {challenge.prompt}
+      </h2>
+      <div className="grid grid-cols-2 gap-4">
+        <motion.button
           onClick={() => pick(true)}
           disabled={locked}
-          type="button"
-          className={`tile-shadow rounded-2xl px-4 py-6 text-3xl font-extrabold transition-transform ${
+          whileHover={locked ? {} : { y: -4, scale: 1.03 }}
+          whileTap={locked ? {} : { scale: 0.96 }}
+          className={`rounded-3xl px-4 py-7 text-3xl font-black text-white shadow-elev transition ${
             locked && picked === true
               ? challenge.answer === true
-                ? "bg-green-400 text-white animate-pop"
-                : "bg-red-400 text-white animate-shake"
-              : "bg-gradient-to-br from-green-300 to-emerald-500 text-white hover:scale-105"
+                ? "bg-gradient-to-br from-emerald-400 to-emerald-600"
+                : "bg-gradient-to-br from-rose-400 to-rose-600"
+              : "bg-gradient-to-br from-emerald-400 to-emerald-600 hover:brightness-110"
           }`}
+          type="button"
         >
           ✓ TRUE
-        </button>
-        <button
+        </motion.button>
+        <motion.button
           onClick={() => pick(false)}
           disabled={locked}
-          type="button"
-          className={`tile-shadow rounded-2xl px-4 py-6 text-3xl font-extrabold transition-transform ${
+          whileHover={locked ? {} : { y: -4, scale: 1.03 }}
+          whileTap={locked ? {} : { scale: 0.96 }}
+          className={`rounded-3xl px-4 py-7 text-3xl font-black text-white shadow-elev transition ${
             locked && picked === false
               ? challenge.answer === false
-                ? "bg-green-400 text-white animate-pop"
-                : "bg-red-400 text-white animate-shake"
-              : "bg-gradient-to-br from-red-300 to-rose-500 text-white hover:scale-105"
+                ? "bg-gradient-to-br from-emerald-400 to-emerald-600"
+                : "bg-gradient-to-br from-rose-400 to-rose-600"
+              : "bg-gradient-to-br from-rose-400 to-rose-600 hover:brightness-110"
           }`}
-        >
-          ✗ FALSE
-        </button>
-      </div>
-      {challenge.hint && (
-        <button
-          onClick={() => {
-            sfx.click();
-            setShowHint((s) => !s);
-          }}
-          className="text-sm font-bold text-purple-700 underline-offset-4 hover:underline"
           type="button"
         >
-          {showHint ? "Hide hint" : "Need a hint?"}
-        </button>
+          ✗ FALSE
+        </motion.button>
+      </div>
+      {challenge.hint && (
+        <div className="mt-5 text-center">
+          <button
+            onClick={() => {
+              sfx.click();
+              setShowHint((s) => !s);
+            }}
+            className="text-sm font-bold text-accent-700 hover:underline"
+            type="button"
+          >
+            {showHint ? "Hide hint" : "💡 Need a hint?"}
+          </button>
+          {showHint && (
+            <p className="mt-3 rounded-2xl bg-amber-100 p-3 text-base text-amber-900">
+              {challenge.hint}
+            </p>
+          )}
+        </div>
       )}
-      {showHint && challenge.hint && (
-        <p className="rounded-2xl bg-yellow-100 p-3 text-center text-base text-yellow-900">{challenge.hint}</p>
-      )}
-    </div>
+    </motion.div>
   );
 }

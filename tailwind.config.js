@@ -4,56 +4,60 @@ export default {
   theme: {
     extend: {
       colors: {
-        troll: {
-          50: "#fff7ed",
-          100: "#ffedd5",
-          400: "#fb923c",
-          500: "#f97316",
-          600: "#ea580c",
-          700: "#c2410c",
+        ink: {
+          50: "#f8fafc",
+          100: "#f1f5f9",
+          200: "#e2e8f0",
+          300: "#cbd5e1",
+          500: "#64748b",
+          700: "#334155",
+          800: "#1e293b",
+          900: "#0f172a",
+          950: "#020617",
         },
-        spider: {
-          400: "#f87171",
-          500: "#ef4444",
-          600: "#dc2626",
-          700: "#b91c1c",
+        accent: {
+          50: "#f5f3ff",
+          100: "#ede9fe",
+          200: "#ddd6fe",
+          400: "#a78bfa",
+          500: "#8b5cf6",
+          600: "#7c3aed",
+          700: "#6d28d9",
+          800: "#5b21b6",
         },
-        explorer: {
-          400: "#60a5fa",
-          500: "#3b82f6",
-          600: "#2563eb",
-          700: "#1d4ed8",
-        },
+        success: "#10b981",
+        warning: "#f59e0b",
+        danger: "#ef4444",
       },
       fontFamily: {
-        display: ['"Fredoka"', "'Comic Sans MS'", "system-ui", "sans-serif"],
+        display: ['"Outfit"', '"Plus Jakarta Sans"', "system-ui", "sans-serif"],
+        body: ['"Plus Jakarta Sans"', '"Outfit"', "system-ui", "sans-serif"],
+      },
+      borderRadius: {
+        "4xl": "2rem",
+        "5xl": "2.5rem",
+      },
+      backdropBlur: {
+        xs: "2px",
+      },
+      boxShadow: {
+        glass: "0 8px 32px rgba(15, 23, 42, 0.12), inset 0 1px 0 rgba(255,255,255,0.55)",
+        elev: "0 12px 40px rgba(15, 23, 42, 0.18), 0 4px 12px rgba(15, 23, 42, 0.08)",
+        glow: "0 0 0 6px rgba(139, 92, 246, 0.15), 0 16px 48px rgba(139, 92, 246, 0.35)",
+        "glow-success": "0 0 0 8px rgba(16, 185, 129, 0.18), 0 16px 48px rgba(16, 185, 129, 0.4)",
       },
       keyframes: {
         wiggle: {
-          "0%, 100%": { transform: "rotate(-3deg)" },
-          "50%": { transform: "rotate(3deg)" },
-        },
-        pop: {
-          "0%": { transform: "scale(0.5)", opacity: "0" },
-          "70%": { transform: "scale(1.1)" },
-          "100%": { transform: "scale(1)", opacity: "1" },
-        },
-        shake: {
-          "0%, 100%": { transform: "translateX(0)" },
-          "25%": { transform: "translateX(-6px)" },
-          "75%": { transform: "translateX(6px)" },
+          "0%, 100%": { transform: "rotate(-2deg)" },
+          "50%": { transform: "rotate(2deg)" },
         },
         floatUp: {
           "0%": { transform: "translateY(0)", opacity: "1" },
-          "100%": { transform: "translateY(-60px)", opacity: "0" },
+          "100%": { transform: "translateY(-80px)", opacity: "0" },
         },
-        bouncey: {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-12px)" },
-        },
-        spin3d: {
-          "0%": { transform: "rotateY(0deg)" },
-          "100%": { transform: "rotateY(360deg)" },
+        breathe: {
+          "0%, 100%": { transform: "scale(1)" },
+          "50%": { transform: "scale(1.04)" },
         },
         shimmer: {
           "0%": { backgroundPosition: "-200% 0" },
@@ -63,16 +67,24 @@ export default {
           "0%": { transform: "translateY(-20vh) rotate(0deg)", opacity: "1" },
           "100%": { transform: "translateY(120vh) rotate(720deg)", opacity: "0" },
         },
+        ringPulse: {
+          "0%": { transform: "scale(0.85)", opacity: "0.9" },
+          "100%": { transform: "scale(1.4)", opacity: "0" },
+        },
+        starburst: {
+          "0%": { transform: "scale(0) rotate(0)", opacity: "0" },
+          "30%": { transform: "scale(1.2) rotate(180deg)", opacity: "1" },
+          "100%": { transform: "scale(1) rotate(360deg)", opacity: "1" },
+        },
       },
       animation: {
         wiggle: "wiggle 0.6s ease-in-out infinite",
-        pop: "pop 0.35s ease-out",
-        shake: "shake 0.4s ease-in-out",
         "float-up": "floatUp 1s ease-out forwards",
-        bouncey: "bouncey 1.2s ease-in-out infinite",
-        spin3d: "spin3d 1.2s linear",
+        breathe: "breathe 3s ease-in-out infinite",
         shimmer: "shimmer 3s linear infinite",
         confetti: "confettiFall 3s linear forwards",
+        "ring-pulse": "ringPulse 0.7s ease-out forwards",
+        starburst: "starburst 0.6s ease-out forwards",
       },
     },
   },

@@ -18,13 +18,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "ch-sound-cheese-cave",
-    title: "The Cheese Cave Rescue",
-    tagline: "Trollgar locked the cheese! Use the CH sound to set it free.",
+    title: "Rescue Chase from the Cheese Cave",
+    tagline: "Trollgar locked Chase in! Use the CH sound to set him free.",
     intro:
-      "Trollgar the grumpy troll has trapped a giant wheel of cheddar in his Cheese Cave. The lock only opens for words with the CH sound. Manas, only YOU can save the cheese!",
-    reward: "Golden Cheese Wheel",
+      "Trollgar the grumpy troll has trapped Chase in the Cheese Cave. The lock only opens for words with the CH sound. Manas, only YOU can save him!",
+    reward: "Police Pup Badge",
     theme: "troll",
     hero: "troll",
+    rescueCharacter: "chase",
     unlockDay: 1,
     challenges: [
       {
@@ -155,13 +156,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "sh-sound-shcity",
-    title: "Web-Slinger in SH-City",
-    tagline: "Swing through SH-City and shush the noisy villains.",
+    title: "Lift Skye from the SH-City Cliff",
+    tagline: "Skye is dangling from a rooftop! Each correct answer pulls her up.",
     intro:
-      "The web-slinger needs a sidekick! Manas, swing across SH-City rooftops with him. Hush the villains by clicking words with the SH sound. SHHHH!",
-    reward: "Hero Web-Cartridge",
+      "Skye is hanging from a SH-City rooftop, Manas! Each SH word you find pulls her closer to safety. SHHHH! Listen carefully.",
+    reward: "Skye's Wing-Wing Whistle",
     theme: "spider",
     hero: "spider",
+    rescueCharacter: "skye",
     unlockDay: 1,
     challenges: [
       {
@@ -290,13 +292,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "ch-vs-sh-bridge",
-    title: "Showdown at Echo Bridge",
-    tagline: "CH or SH? Listen carefully — the bridge will only hold the right answer.",
+    title: "Free Blippi at Echo Bridge",
+    tagline: "Blippi is stuck on Echo Bridge! CH or SH? Pick wisely.",
     intro:
-      "Echo Bridge is split in two halves: one for CH and one for SH. If you pick wrong, the bridge wobbles. Listen carefully and pick the correct spelling!",
+      "Blippi is stuck on Echo Bridge — half holds CH words, half holds SH words. If you pick wrong, the bridge wobbles. Help Blippi cross safely, Manas!",
     reward: "Bridge Master Badge",
     theme: "magic",
     hero: "explorer",
+    rescueCharacter: "blippi",
     unlockDay: 1,
     challenges: [
       {
@@ -421,13 +424,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "th-forest",
-    title: "Three Trolls and the TH Forest",
-    tagline: "Three sneaky trolls block the path. Use TH words to pass.",
+    title: "Untangle Rocky in the TH Forest",
+    tagline: "Three sneaky trolls tangled Rocky in vines! TH words cut him free.",
     intro:
-      "Three trolls under three bridges only let travelers pass if they say words with TH. Stick out your tongue, blow air, and say it: TH!",
-    reward: "Bridge Pass + 3 thunder stones",
+      "Rocky is all tangled up in the TH Forest, Manas! Three trolls under three bridges will only let you pass if you say words with TH. Stick out your tongue, blow air, and say it: TH!",
+    reward: "Rocky's Recycle Tool",
     theme: "troll",
     hero: "troll",
+    rescueCharacter: "rocky",
     unlockDay: 1,
     challenges: [
       {
@@ -555,13 +559,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "wh-questions",
-    title: "Where, When and Why?",
-    tagline: "Solve the WH-Sphinx's riddles using WH words.",
+    title: "Solve Riddles with Blippi",
+    tagline: "The WH-Sphinx blocks Blippi's path. Use WH words to pass!",
     intro:
-      "The WH-Sphinx will only let you through her gate if you can answer her questions. Most begin with W-H. Listen and choose carefully!",
+      "The WH-Sphinx will only let Blippi through her gate if you can answer her riddles, Manas. Most begin with W-H. Listen and choose carefully!",
     reward: "Sphinx's Whisker",
     theme: "magic",
     hero: "explorer",
+    rescueCharacter: "blippi",
     unlockDay: 1,
     challenges: [
       {
@@ -688,13 +693,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "ph-photo-town",
-    title: "Phantom Photos in PH-Town",
-    tagline: "Phantoms snap photos! Find every PH word that says /f/.",
+    title: "Pop Marshall's Bubble in PH-Town",
+    tagline: "Marshall is stuck in a bubble. Pop it with every PH word!",
     intro:
-      "Strange phantoms in PH-Town spell their /f/ sound with PH. Help the explorer find every PH word!",
-    reward: "Phantom Photo Lens",
+      "Marshall got stuck in a giant phonics bubble in PH-Town, Manas! Each time you find a PH word that says /f/, the bubble shrinks. Free him fast!",
+    reward: "Marshall's Fire Helmet",
     theme: "explorer",
     hero: "explorer",
+    rescueCharacter: "marshall",
     unlockDay: 1,
     challenges: [
       {
@@ -818,13 +824,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "silent-letters",
-    title: "Silent but Sneaky",
-    tagline: "Some letters hide! Find the silent ones.",
+    title: "Free Rocky from the Silent Library",
+    tagline: "Sneaky silent letters trapped Rocky! Spot them all to free him.",
     intro:
-      "In a quiet library, some letters whisper... and some say nothing at all. Spot the silent letter sneaks in every word!",
+      "Rocky wandered into the Silent Library and got tangled in invisible letter strings, Manas! Some letters whisper... and some say nothing at all. Spot the silent letter sneaks in every word to free Rocky!",
     reward: "Silent Letter Magnifying Glass",
     theme: "magic",
     hero: "blippo",
+    rescueCharacter: "rocky",
     unlockDay: 1,
     challenges: [
       {
@@ -952,13 +959,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "magic-e",
-    title: "Magic E Mountain",
-    tagline: "Add a silent E and the vowel says its NAME!",
+    title: "Dig Rubble Out on Magic E Mountain",
+    tagline: "Rubble's stuck in mud! Magic E spells dig him out.",
     intro:
-      "On Magic E Mountain, the wizard's silent E makes vowels say their names. CAP becomes CAPE! HOP becomes HOPE! Solve the spells!",
-    reward: "Wand of Vowel-Naming",
+      "Rubble is stuck in mud on Magic E Mountain, Manas! The wizard's silent E makes vowels say their names. CAP becomes CAPE! HOP becomes HOPE! Each spell pulls Rubble higher!",
+    reward: "Rubble's Builder Shovel",
     theme: "magic",
     hero: "explorer",
+    rescueCharacter: "rubble",
     unlockDay: 1,
     challenges: [
       {
@@ -1078,13 +1086,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "vowel-teams",
-    title: "Vowel Team Voyage",
-    tagline: "Two vowels, one sound. The first one does the talking!",
+    title: "Sail with Skye on Vowel Team Voyage",
+    tagline: "Skye flies overhead. Help her find every vowel team island.",
     intro:
-      "When two vowels go walking, the first one usually does the talking! Sail with the explorer through islands of vowel teams: ai, ee, oa, ie, ay, ow, ea.",
-    reward: "Vowel Team Sail",
+      "Skye is flying you across the ocean to spot every vowel team island, Manas! When two vowels go walking, the first does the talking. Listen for ai, ee, oa, ie, ay, ow, ea!",
+    reward: "Skye's Wing-Wing Wings",
     theme: "explorer",
     hero: "explorer",
+    rescueCharacter: "skye",
     unlockDay: 1,
     challenges: [
       {
@@ -1214,13 +1223,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "r-controlled",
-    title: "R-Controlled Rainforest",
-    tagline: "Bossy R changes vowels — listen carefully!",
+    title: "Melt Everest's Ice in the Rainforest",
+    tagline: "Everest is frozen solid! Bossy-R words melt the ice.",
     intro:
-      "Deep in the rainforest, the BOSSY R takes over vowels. AR, ER, IR, OR, UR. They sound special. Help the explorer find each!",
-    reward: "Bossy R Compass",
+      "Everest got frozen by an ice spell deep in the R-Controlled Rainforest, Manas! Each Bossy-R word — AR, ER, IR, OR, UR — melts a chunk of ice. Free her fast!",
+    reward: "Everest's Snowboard",
     theme: "explorer",
     hero: "explorer",
+    rescueCharacter: "everest",
     unlockDay: 1,
     challenges: [
       {
@@ -1350,13 +1360,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "diphthongs",
-    title: "Diphthong Dunes",
-    tagline: "Sliding sounds: oi, oy, ou, ow.",
+    title: "Surf with Skye on Diphthong Dunes",
+    tagline: "Riding sliding sounds — oi, oy, ou, ow!",
     intro:
-      "On the singing dunes, two vowels glide together to make one sliding sound. OI, OY, OU, OW. Catch every diphthong!",
+      "Skye is surfing the singing dunes with you, Manas! Two vowels glide together to make one sliding sound: OI, OY, OU, OW. Catch every diphthong wave!",
     reward: "Glide Pendant",
     theme: "explorer",
     hero: "blippo",
+    rescueCharacter: "skye",
     unlockDay: 1,
     challenges: [
       {
@@ -1481,13 +1492,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "sight-words",
-    title: "Sight Word Sanctuary",
-    tagline: "Tricky words you just have to remember!",
+    title: "Free Chase from the Sight Word Vault",
+    tagline: "Trollgar locked Chase in the Sight Word Vault!",
     intro:
-      "Some words don't follow phonics rules — you just have to know them. The Sanctuary gives you safe passage if you can spell each tricky sight word!",
+      "Trollgar trapped Chase inside the Sight Word Sanctuary, Manas! These words don't follow phonics rules — you just have to know them. Each correct spelling unlocks one chain on Chase's cage!",
     reward: "Sight Word Crystal",
     theme: "magic",
     hero: "blippo",
+    rescueCharacter: "chase",
     unlockDay: 1,
     challenges: [
       {
@@ -1608,13 +1620,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "suffix-stadium",
-    title: "Suffix Stadium",
-    tagline: "Run, jump, climb! Add the suffix to win the race.",
+    title: "Race with Chase at Suffix Stadium",
+    tagline: "Add the right suffix and Chase sprints to the finish.",
     intro:
-      "Welcome to Suffix Stadium! Add -ing, -ed, -er, or -est to win each event. Sometimes you double the last letter, sometimes you drop an E.",
+      "Chase is racing at Suffix Stadium, Manas! Each correct suffix you add — -ing, -ed, -er, or -est — pushes him one stride ahead. Sometimes double the last letter, sometimes drop an E. Help him win!",
     reward: "Champion's Stopwatch",
     theme: "spider",
     hero: "spider",
+    rescueCharacter: "chase",
     unlockDay: 1,
     challenges: [
       {
@@ -1732,13 +1745,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "compound-carnival",
-    title: "Compound Word Carnival",
-    tagline: "Smash two words together to make a bigger one!",
+    title: "Find Rubble at the Compound Carnival",
+    tagline: "Two small words crash into one big word — and free Rubble!",
     intro:
-      "At the Carnival, two small words crash together and become one big word! Sun + shine = sunshine! Find them all.",
+      "Rubble is hidden behind a giant compound-word puzzle at the Carnival, Manas! Sun + shine = sunshine! Find every compound word to bring Rubble out.",
     reward: "Carnival Cotton Candy",
     theme: "troll",
     hero: "blippo",
+    rescueCharacter: "rubble",
     unlockDay: 1,
     challenges: [
       {
@@ -1854,13 +1868,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "final-boss-trollgar",
-    title: "Final Boss: Trollgar's Castle",
+    title: "Final Boss: Defeat Trollgar",
     tagline: "Rapid-fire showdown! How many can you beat in 60 seconds?",
     intro:
-      "Trollgar is BACK, Manas — and angrier than ever. He has 60 seconds of phonics riddles. Beat as many as you can! Each correct answer hurts him, each wrong answer heals him. Don't stop, Manas!",
-    reward: "Hero of Phonics — Trophy",
+      "Trollgar is BACK, Manas — and angrier than ever. He has 60 seconds of phonics riddles. The whole Phonics Squad is counting on you! Each correct answer hurts him, each wrong answer heals him. Don't stop!",
+    reward: "Champion of Phonics — Gold Trophy",
     theme: "troll",
     hero: "spider",
+    rescueCharacter: "trollgar",
     unlockDay: 1,
     challenges: [
       {

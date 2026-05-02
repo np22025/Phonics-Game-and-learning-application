@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { sfx, speak } from "../../lib/audio";
 import type { ListenAndPickChallenge } from "../../types";
 
@@ -29,70 +30,86 @@ export function ListenAndPick({ challenge, onAnswer, questionNumber, totalQuesti
     const correct = challenge.options[idx].correct;
     if (correct) sfx.correct();
     else sfx.wrong();
-    setTimeout(() => onAnswer(correct), 900);
+    setTimeout(() => onAnswer(correct), 1100);
   }
 
   return (
-    <div className="flex w-full max-w-2xl flex-col items-center gap-6 rounded-3xl bg-white/90 p-6 shadow-xl backdrop-blur sm:p-8">
-      <div className="flex w-full items-center justify-between text-sm font-bold text-gray-500">
-        <span>
-          Question {questionNumber} / {totalQuestions}
-        </span>
+    <motion.div
+      key={questionNumber}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="card w-full max-w-2xl p-6 sm:p-8"
+    >
+      <div className="mb-4 flex items-center justify-between text-sm font-bold text-ink-500">
+        <span>{questionNumber} / {totalQuestions}</span>
+        <span>👂 Listen carefully</span>
       </div>
-      <h2 className="text-center text-2xl font-bold text-gray-800 sm:text-3xl">{challenge.prompt}</h2>
-      <button
-        onClick={() => {
-          sfx.click();
-          speak(challenge.spokenWord);
-        }}
-        className="tile-shadow flex items-center gap-3 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 px-8 py-5 text-2xl font-bold text-white"
-        aria-label="Play the spoken word"
-        type="button"
-      >
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19" />
-          <path d="M19 5a8 8 0 0 1 0 14" />
-          <path d="M16 8a5 5 0 0 1 0 8" />
-        </svg>
-        Play sound
-      </button>
-      <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
+      <h2 className="mb-6 text-center text-2xl font-extrabold text-ink-900 sm:text-3xl">
+        {challenge.prompt}
+      </h2>
+      <div className="mb-6 flex justify-center">
+        <motion.button
+          onClick={() => {
+            sfx.click();
+            speak(challenge.spokenWord);
+          }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="btn-primary flex items-center gap-3"
+          type="button"
+        >
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19" />
+            <path d="M19 5a8 8 0 0 1 0 14" />
+            <path d="M16 8a5 5 0 0 1 0 8" />
+          </svg>
+          Play sound
+        </motion.button>
+      </div>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {challenge.options.map((opt, idx) => {
           const isPicked = picked === idx;
           const showResult = locked && isPicked;
-          const cls = showResult
-            ? opt.correct
-              ? "bg-green-400 text-white animate-pop"
-              : "bg-red-400 text-white animate-shake"
-            : "bg-gradient-to-br from-blue-300 to-indigo-400 hover:from-blue-200 hover:to-indigo-300 text-gray-900";
+          const className = `option-tile ${
+            showResult ? (opt.correct ? "correct" : "wrong") : ""
+          }`;
           return (
-            <button
+            <motion.button
               key={idx}
               onClick={() => pick(idx)}
               disabled={locked}
               type="button"
-              className={`tile-shadow rounded-2xl px-4 py-5 text-2xl font-bold transition-transform ${cls}`}
+              className={className}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.05 * idx }}
+              whileHover={locked ? {} : { y: -4, scale: 1.02 }}
+              whileTap={locked ? {} : { scale: 0.96 }}
             >
               {opt.text}
-            </button>
+            </motion.button>
           );
         })}
       </div>
       {challenge.hint && (
-        <button
-          onClick={() => {
-            sfx.click();
-            setShowHint((s) => !s);
-          }}
-          className="mt-2 text-sm font-bold text-purple-700 underline-offset-4 hover:underline"
-          type="button"
-        >
-          {showHint ? "Hide hint" : "Need a hint?"}
-        </button>
+        <div className="mt-5 text-center">
+          <button
+            onClick={() => {
+              sfx.click();
+              setShowHint((s) => !s);
+            }}
+            className="text-sm font-bold text-accent-700 underline-offset-4 hover:underline"
+            type="button"
+          >
+            {showHint ? "Hide hint" : "💡 Need a hint?"}
+          </button>
+          {showHint && (
+            <p className="mt-3 rounded-2xl bg-amber-100 p-3 text-base text-amber-900">
+              {challenge.hint}
+            </p>
+          )}
+        </div>
       )}
-      {showHint && challenge.hint && (
-        <p className="rounded-2xl bg-yellow-100 p-3 text-center text-base text-yellow-900">{challenge.hint}</p>
-      )}
-    </div>
+    </motion.div>
   );
 }
