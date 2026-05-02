@@ -1,9 +1,9 @@
 {
-  "name": "phonics-quest",
+  "name": "phonics-quest-original",
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Phonics Quest - a daily phonics adventure game for third graders, themed around trolls, web-slingers, and explorers.",
+  "description": "Phonics Quest - Original Edition. Daily phonics adventures with the Sound Squad - a team of fully-original animated heroes.",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

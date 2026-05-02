@@ -1,39 +1,31 @@
-// Character roster and asset slots.
-//
-// Each character is an asset slot — the game loads the image from
-// /public/characters/<file>. If the file is missing, an inline SVG fallback
-// renders so the game always works.
-//
-// To use real PAW Patrol / Blippi art, drop your own images into
-//   public/characters/
-// using these exact filenames (PNG with transparent background works best):
-//
-//   chase.png      (police pup)
-//   skye.png       (sky/flying pup)
-//   marshall.png   (fire pup)
-//   rubble.png     (builder pup)
-//   everest.png    (snow husky)
-//   rocky.png      (recycle/eco pup)
-//   blippi.png     (explorer host)
-//   trollgar.png   (boss villain)
-//
-// See CHARACTERS.md for full instructions.
+// =============================================================================
+// THE SOUND SQUAD — original character roster
+// =============================================================================
+// All characters are 100% original creative work designed for this game.
+// They are rendered as inline SVG (no external image files needed). You can
+// optionally drop in your own PNG/JPG art in public/characters/ to override
+// the default SVGs — the game checks for those files first.
+// =============================================================================
 
 export type CharacterId =
-  | "chase"
-  | "skye"
-  | "marshall"
-  | "rubble"
-  | "everest"
-  | "rocky"
-  | "blippi"
-  | "trollgar";
+  | "pixel"
+  | "nova"
+  | "roar"
+  | "whiskers"
+  | "glimmer"
+  | "tinker"
+  | "sage"
+  | "shadow";
 
 export interface CharacterDef {
   id: CharacterId;
   displayName: string;
   shortName: string;
-  // Tagline shown when this character is being rescued.
+  // Species/concept tagline.
+  archetype: string;
+  // Character motto shown when they arrive.
+  catchphrase: string;
+  // Used as the rescue tagline on a quest card.
   tagline: string;
   // Color used for accents when this character appears.
   accentColor: string;
@@ -47,103 +39,117 @@ export interface CharacterDef {
 }
 
 export const CHARACTERS: Record<CharacterId, CharacterDef> = {
-  chase: {
-    id: "chase",
-    displayName: "Chase the Police Pup",
-    shortName: "Chase",
-    tagline: "Top cop on the case! Help him crack the CH code.",
-    accentColor: "#3b82f6",
-    accentColorDark: "#1e3a8a",
-    rescueScenario: "cage",
-    rescueLine: "Chase is locked in Trollgar's cage! Spell your way out.",
-    rescueCheer: "Chase is on the case! Woo-hoo!",
-  },
-  skye: {
-    id: "skye",
-    displayName: "Skye the Flying Pup",
-    shortName: "Skye",
-    tagline: "Wings out, ready for adventure! Lift Skye up with each correct answer.",
-    accentColor: "#ec4899",
-    accentColorDark: "#9d174d",
-    rescueScenario: "cliff",
-    rescueLine: "Skye is hanging from a cliff! Each right answer pulls her up.",
-    rescueCheer: "Yip yip yippee! Skye is safe!",
-  },
-  marshall: {
-    id: "marshall",
-    displayName: "Marshall the Fire Pup",
-    shortName: "Marshall",
-    tagline: "Fire pup needs you! Spray water with every correct answer.",
-    accentColor: "#ef4444",
-    accentColorDark: "#7f1d1d",
+  pixel: {
+    id: "pixel",
+    displayName: "Pixel the Sky Scout",
+    shortName: "Pixel",
+    archetype: "Robot Scout",
+    catchphrase: "Ready to scan!",
+    tagline: "A pocket-sized blue robot scout. His sensors lock onto every CH sound.",
+    accentColor: "#38bdf8",
+    accentColorDark: "#0c4a6e",
     rescueScenario: "trapped-in-bubble",
-    rescueLine: "Marshall is trapped in a giant bubble! Pop it with phonics!",
-    rescueCheer: "I'm fired up! Thanks Manas!",
+    rescueLine: "Pixel is trapped in a glitch-bubble! Each CH word frees a circuit.",
+    rescueCheer: "Systems online! Thanks Manas!",
   },
-  rubble: {
-    id: "rubble",
-    displayName: "Rubble the Builder Pup",
-    shortName: "Rubble",
-    tagline: "Builder on the double! Help dig him out.",
+  nova: {
+    id: "nova",
+    displayName: "Nova the Star Sprite",
+    shortName: "Nova",
+    archetype: "Star Sprite",
+    catchphrase: "Sparkle on!",
+    tagline: "A glowing star-shaped sprite. She lights up every SH sound.",
+    accentColor: "#ec4899",
+    accentColorDark: "#831843",
+    rescueScenario: "cliff",
+    rescueLine: "Nova has dimmed and is falling from the sky! SH words make her shine.",
+    rescueCheer: "Twinkle, twinkle, you saved me!",
+  },
+  roar: {
+    id: "roar",
+    displayName: "Roar the Brave Cub",
+    shortName: "Roar",
+    archetype: "Lion Cub Hero",
+    catchphrase: "Roaaaarr!",
+    tagline: "A tiny lion with a big heart. He charges through TH words.",
     accentColor: "#f59e0b",
-    accentColorDark: "#92400e",
-    rescueScenario: "stuck-in-mud",
-    rescueLine: "Rubble is stuck in mud! Pull him out with right answers.",
-    rescueCheer: "Rubble on the double! Free at last!",
+    accentColorDark: "#78350f",
+    rescueScenario: "cage",
+    rescueLine: "Roar is in a thorn-cage! TH words snap each thorn.",
+    rescueCheer: "Roaaarr! I'm free, friend!",
   },
-  everest: {
-    id: "everest",
-    displayName: "Everest the Snow Husky",
-    shortName: "Everest",
-    tagline: "Frozen in ice — melt her free with phonics fire!",
-    accentColor: "#60a5fa",
-    accentColorDark: "#1e40af",
+  whiskers: {
+    id: "whiskers",
+    displayName: "Whiskers the Detective Fox",
+    shortName: "Whiskers",
+    archetype: "Fox Detective",
+    catchphrase: "Case closed!",
+    tagline: "A clever red fox with a magnifying glass. She solves WH riddles.",
+    accentColor: "#f97316",
+    accentColorDark: "#9a3412",
+    rescueScenario: "tangled",
+    rescueLine: "Whiskers got tangled in her own clue-strings! Solve to untangle her.",
+    rescueCheer: "Case closed! Brilliant work!",
+  },
+  glimmer: {
+    id: "glimmer",
+    displayName: "Glimmer the Rainbow Unicorn",
+    shortName: "Glimmer",
+    archetype: "Unicorn",
+    catchphrase: "Sparkle gallop!",
+    tagline: "A pink unicorn with a rainbow mane. Her horn glows for magic E.",
+    accentColor: "#a855f7",
+    accentColorDark: "#581c87",
     rescueScenario: "frozen",
-    rescueLine: "Everest is frozen solid! Each correct answer melts a chunk of ice.",
-    rescueCheer: "Ice or snow, I'm ready to go!",
+    rescueLine: "Glimmer's horn is frozen! Magic E words melt the ice.",
+    rescueCheer: "Sparkle gallop! Thank you!",
   },
-  rocky: {
-    id: "rocky",
-    displayName: "Rocky the Recycle Pup",
-    shortName: "Rocky",
-    tagline: "Tangled in tape and trash. Untangle him!",
+  tinker: {
+    id: "tinker",
+    displayName: "Tinker the Frog Inventor",
+    shortName: "Tinker",
+    archetype: "Frog Inventor",
+    catchphrase: "Tinker time!",
+    tagline: "A green frog with goggles and gadgets. He tinkers with vowel teams.",
     accentColor: "#10b981",
     accentColorDark: "#064e3b",
-    rescueScenario: "tangled",
-    rescueLine: "Rocky is all tangled up! Each correct answer cuts a knot.",
-    rescueCheer: "Don't lose it, reuse it! Thanks Manas!",
+    rescueScenario: "stuck-in-mud",
+    rescueLine: "Tinker fell into the swamp! Pull him out with vowel-team words.",
+    rescueCheer: "Tinker time! Saved the day!",
   },
-  blippi: {
-    id: "blippi",
-    displayName: "Blippi the Explorer",
-    shortName: "Blippi",
-    tagline: "Curious explorer needs your phonics smarts!",
-    accentColor: "#f59e0b",
-    accentColorDark: "#7c2d12",
-    rescueScenario: "trapped-in-bubble",
-    rescueLine: "Blippi got stuck in the Phonics Maze! Lead him out.",
-    rescueCheer: "So much fun! Great work, Manas!",
-  },
-  trollgar: {
-    id: "trollgar",
-    displayName: "Trollgar the Boss",
-    shortName: "Trollgar",
-    tagline: "The villain of every phonics tale.",
-    accentColor: "#7c2d12",
-    accentColorDark: "#451a03",
+  sage: {
+    id: "sage",
+    displayName: "Sage the Wise Owl",
+    shortName: "Sage",
+    archetype: "Owl Wizard",
+    catchphrase: "By the book!",
+    tagline: "A white owl wizard with a starry hat. He guards the sight-word vault.",
+    accentColor: "#6366f1",
+    accentColorDark: "#312e81",
     rescueScenario: "cage",
-    rescueLine: "Trollgar approaches!",
+    rescueLine: "Sage is locked in his own spellbook! Sight words break the seal.",
+    rescueCheer: "Well done, young scholar!",
+  },
+  shadow: {
+    id: "shadow",
+    displayName: "The Shadow",
+    shortName: "Shadow",
+    archetype: "Mischievous Shadow",
+    catchphrase: "You can't catch me...",
+    tagline: "A sneaky shadow creature who steals letters and locks them away.",
+    accentColor: "#7c3aed",
+    accentColorDark: "#3b0764",
+    rescueScenario: "cage",
+    rescueLine: "The Shadow appears!",
     rescueCheer: "Defeated!",
   },
 };
 
-// Filename used in /public/characters/<file>
+// Filename used in /public/characters/<file> if the user wants to override
+// any character with a custom image.
 export function characterAssetPath(id: CharacterId): string {
-  // Vite serves /public at the site root.
   return `${import.meta.env.BASE_URL}characters/${id}.png`;
 }
-
-// JPG fallback path so users can drop either format.
 export function characterAssetPathJpg(id: CharacterId): string {
   return `${import.meta.env.BASE_URL}characters/${id}.jpg`;
 }

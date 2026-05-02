@@ -101,14 +101,14 @@ export interface Quest {
   // The character being rescued in this quest. Optional — quests without
   // a rescueCharacter just show the hero mascot, no rescue mechanic.
   rescueCharacter?:
-    | "chase"
-    | "skye"
-    | "marshall"
-    | "rubble"
-    | "everest"
-    | "rocky"
-    | "blippi"
-    | "trollgar";
+    | "pixel"
+    | "nova"
+    | "roar"
+    | "whiskers"
+    | "glimmer"
+    | "tinker"
+    | "sage"
+    | "shadow";
   // Day this quest unlocks. Day 1 quests are available immediately.
   // Day N quests unlock on the Nth calendar day after the player's first session.
   unlockDay: number;

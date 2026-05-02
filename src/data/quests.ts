@@ -18,14 +18,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "ch-sound-cheese-cave",
-    title: "Rescue Chase from the Cheese Cave",
-    tagline: "Trollgar locked Chase in! Use the CH sound to set him free.",
+    title: "Rescue Pixel from the Glitch Cave",
+    tagline: "The Shadow trapped Pixel! Use the CH sound to reboot him.",
     intro:
-      "Trollgar the grumpy troll has trapped Chase in the Cheese Cave. The lock only opens for words with the CH sound. Manas, only YOU can save him!",
-    reward: "Police Pup Badge",
+      "The Shadow has trapped Pixel the robot scout inside a glitch-bubble in the Cheese Cave. His CH sensors are offline! Each CH word you find restores one of his circuits. Manas, only YOU can reboot him!",
+    reward: "Pixel's Sky Compass",
     theme: "troll",
     hero: "troll",
-    rescueCharacter: "chase",
+    rescueCharacter: "pixel",
     unlockDay: 1,
     challenges: [
       {
@@ -156,14 +156,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "sh-sound-shcity",
-    title: "Lift Skye from the SH-City Cliff",
-    tagline: "Skye is dangling from a rooftop! Each correct answer pulls her up.",
+    title: "Catch Nova Falling from the Sky",
+    tagline: "Nova has dimmed and is falling! SH words make her shine again.",
     intro:
-      "Skye is hanging from a SH-City rooftop, Manas! Each SH word you find pulls her closer to safety. SHHHH! Listen carefully.",
-    reward: "Skye's Wing-Wing Whistle",
+      "Nova the star sprite has dimmed and is tumbling out of the sky, Manas! Every SH word you find sparks her light back to life. SHHHH! Listen carefully.",
+    reward: "Nova's Stardust Locket",
     theme: "spider",
     hero: "spider",
-    rescueCharacter: "skye",
+    rescueCharacter: "nova",
     unlockDay: 1,
     challenges: [
       {
@@ -292,14 +292,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "ch-vs-sh-bridge",
-    title: "Free Blippi at Echo Bridge",
-    tagline: "Blippi is stuck on Echo Bridge! CH or SH? Pick wisely.",
+    title: "Help Sage Cross Echo Bridge",
+    tagline: "Sage's spellbook split in two. CH on one side, SH on the other.",
     intro:
-      "Blippi is stuck on Echo Bridge — half holds CH words, half holds SH words. If you pick wrong, the bridge wobbles. Help Blippi cross safely, Manas!",
+      "Sage the owl wizard's spellbook split into halves and built a bridge — one side only holds CH words, the other only SH words. Pick wrong and the bridge wobbles! Help Sage cross safely, Manas.",
     reward: "Bridge Master Badge",
     theme: "magic",
     hero: "explorer",
-    rescueCharacter: "blippi",
+    rescueCharacter: "sage",
     unlockDay: 1,
     challenges: [
       {
@@ -424,14 +424,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "th-forest",
-    title: "Untangle Rocky in the TH Forest",
-    tagline: "Three sneaky trolls tangled Rocky in vines! TH words cut him free.",
+    title: "Charge Through the Thorn Forest with Roar",
+    tagline: "The Shadow's thorn vines block Roar! TH words cut him free.",
     intro:
-      "Rocky is all tangled up in the TH Forest, Manas! Three trolls under three bridges will only let you pass if you say words with TH. Stick out your tongue, blow air, and say it: TH!",
-    reward: "Rocky's Recycle Tool",
+      "Roar the brave cub got snagged in the TH Forest, Manas! The Shadow's thorn vines only break for words with TH. Stick out your tongue, blow air, and roar it: TH!",
+    reward: "Roar's Brave Heart Medal",
     theme: "troll",
     hero: "troll",
-    rescueCharacter: "rocky",
+    rescueCharacter: "roar",
     unlockDay: 1,
     challenges: [
       {
@@ -559,14 +559,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "wh-questions",
-    title: "Solve Riddles with Blippi",
-    tagline: "The WH-Sphinx blocks Blippi's path. Use WH words to pass!",
+    title: "Solve Riddles with Whiskers",
+    tagline: "The WH-Sphinx blocks the path. Whiskers needs your WH word skills!",
     intro:
-      "The WH-Sphinx will only let Blippi through her gate if you can answer her riddles, Manas. Most begin with W-H. Listen and choose carefully!",
-    reward: "Sphinx's Whisker",
+      "Whiskers the detective fox is on the hunt, Manas, but the WH-Sphinx won't let her past without solving riddles. Most start with W-H. Listen and choose carefully — the case depends on it!",
+    reward: "Detective's Magnifying Glass",
     theme: "magic",
     hero: "explorer",
-    rescueCharacter: "blippi",
+    rescueCharacter: "whiskers",
     unlockDay: 1,
     challenges: [
       {
@@ -693,14 +693,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "ph-photo-town",
-    title: "Pop Marshall's Bubble in PH-Town",
-    tagline: "Marshall is stuck in a bubble. Pop it with every PH word!",
+    title: "Pop Tinker's Bubble in PH-Town",
+    tagline: "Tinker is stuck in a soap-bubble! Pop it with every PH word.",
     intro:
-      "Marshall got stuck in a giant phonics bubble in PH-Town, Manas! Each time you find a PH word that says /f/, the bubble shrinks. Free him fast!",
-    reward: "Marshall's Fire Helmet",
+      "Tinker the frog inventor got stuck in a giant phonics bubble in PH-Town, Manas! Each time you find a PH word that says /f/, the bubble shrinks. Free him fast!",
+    reward: "Tinker's Wrench Pin",
     theme: "explorer",
     hero: "explorer",
-    rescueCharacter: "marshall",
+    rescueCharacter: "tinker",
     unlockDay: 1,
     challenges: [
       {
@@ -824,14 +824,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "silent-letters",
-    title: "Free Rocky from the Silent Library",
-    tagline: "Sneaky silent letters trapped Rocky! Spot them all to free him.",
+    title: "Help Whiskers Find the Silent Letters",
+    tagline: "Detective Whiskers needs YOUR eyes to spot the silent ones.",
     intro:
-      "Rocky wandered into the Silent Library and got tangled in invisible letter strings, Manas! Some letters whisper... and some say nothing at all. Spot the silent letter sneaks in every word to free Rocky!",
-    reward: "Silent Letter Magnifying Glass",
+      "Whiskers the detective fox is in the Silent Library, Manas, but the silent letters are SO sneaky she needs your help. Some letters whisper... and some say nothing at all. Spot every silent letter sneak!",
+    reward: "Silent Letter Magnifying Lens",
     theme: "magic",
     hero: "blippo",
-    rescueCharacter: "rocky",
+    rescueCharacter: "whiskers",
     unlockDay: 1,
     challenges: [
       {
@@ -959,14 +959,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "magic-e",
-    title: "Dig Rubble Out on Magic E Mountain",
-    tagline: "Rubble's stuck in mud! Magic E spells dig him out.",
+    title: "Unfreeze Glimmer's Horn on Magic E Mountain",
+    tagline: "Glimmer's magic horn is iced over! Magic E spells melt it.",
     intro:
-      "Rubble is stuck in mud on Magic E Mountain, Manas! The wizard's silent E makes vowels say their names. CAP becomes CAPE! HOP becomes HOPE! Each spell pulls Rubble higher!",
-    reward: "Rubble's Builder Shovel",
+      "Glimmer the unicorn's magic horn is frozen solid on Magic E Mountain, Manas! The silent E makes vowels say their names — CAP becomes CAPE, HOP becomes HOPE — and each spell melts a layer of ice on Glimmer's horn!",
+    reward: "Glimmer's Rainbow Charm",
     theme: "magic",
     hero: "explorer",
-    rescueCharacter: "rubble",
+    rescueCharacter: "glimmer",
     unlockDay: 1,
     challenges: [
       {
@@ -1086,14 +1086,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "vowel-teams",
-    title: "Sail with Skye on Vowel Team Voyage",
-    tagline: "Skye flies overhead. Help her find every vowel team island.",
+    title: "Sail the Star-Sea with Nova",
+    tagline: "Nova guides your ship past glowing vowel-team islands.",
     intro:
-      "Skye is flying you across the ocean to spot every vowel team island, Manas! When two vowels go walking, the first does the talking. Listen for ai, ee, oa, ie, ay, ow, ea!",
-    reward: "Skye's Wing-Wing Wings",
+      "Nova the star sprite is guiding your ship through the Star-Sea, Manas! Every vowel-team island glows when you say its sound. When two vowels go walking, the first does the talking. Listen for ai, ee, oa, ie, ay, ow, ea!",
+    reward: "Nova's Constellation Map",
     theme: "explorer",
     hero: "explorer",
-    rescueCharacter: "skye",
+    rescueCharacter: "nova",
     unlockDay: 1,
     challenges: [
       {
@@ -1223,14 +1223,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "r-controlled",
-    title: "Melt Everest's Ice in the Rainforest",
-    tagline: "Everest is frozen solid! Bossy-R words melt the ice.",
+    title: "Free Tinker from the Mud Swamp",
+    tagline: "Tinker is sinking! Bossy-R words pull him up.",
     intro:
-      "Everest got frozen by an ice spell deep in the R-Controlled Rainforest, Manas! Each Bossy-R word — AR, ER, IR, OR, UR — melts a chunk of ice. Free her fast!",
-    reward: "Everest's Snowboard",
+      "Tinker the frog inventor is stuck in mud deep in the R-Controlled Rainforest, Manas! Each Bossy-R word — AR, ER, IR, OR, UR — gives a tug on the rope. Pull him out fast!",
+    reward: "Tinker's Toolbelt Charm",
     theme: "explorer",
     hero: "explorer",
-    rescueCharacter: "everest",
+    rescueCharacter: "tinker",
     unlockDay: 1,
     challenges: [
       {
@@ -1360,14 +1360,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "diphthongs",
-    title: "Surf with Skye on Diphthong Dunes",
-    tagline: "Riding sliding sounds — oi, oy, ou, ow!",
+    title: "Roar Down the Singing Dunes",
+    tagline: "Sliding sounds — oi, oy, ou, ow! Roar surfs them all.",
     intro:
-      "Skye is surfing the singing dunes with you, Manas! Two vowels glide together to make one sliding sound: OI, OY, OU, OW. Catch every diphthong wave!",
-    reward: "Glide Pendant",
+      "Roar the brave cub is sand-surfing the singing dunes with you, Manas! Two vowels glide together to make one sliding sound: OI, OY, OU, OW. Catch every diphthong wave!",
+    reward: "Roar's Glide Pendant",
     theme: "explorer",
     hero: "blippo",
-    rescueCharacter: "skye",
+    rescueCharacter: "roar",
     unlockDay: 1,
     challenges: [
       {
@@ -1492,14 +1492,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "sight-words",
-    title: "Free Chase from the Sight Word Vault",
-    tagline: "Trollgar locked Chase in the Sight Word Vault!",
+    title: "Free Sage from his Spellbook",
+    tagline: "The Shadow locked Sage inside his own book of sight words!",
     intro:
-      "Trollgar trapped Chase inside the Sight Word Sanctuary, Manas! These words don't follow phonics rules — you just have to know them. Each correct spelling unlocks one chain on Chase's cage!",
-    reward: "Sight Word Crystal",
+      "The Shadow trapped Sage inside the Sight Word Sanctuary, Manas! These words don't follow phonics rules — you just have to know them. Each correct spelling breaks a seal on Sage's spellbook!",
+    reward: "Sage's Sight Word Crystal",
     theme: "magic",
     hero: "blippo",
-    rescueCharacter: "chase",
+    rescueCharacter: "sage",
     unlockDay: 1,
     challenges: [
       {
@@ -1620,14 +1620,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "suffix-stadium",
-    title: "Race with Chase at Suffix Stadium",
-    tagline: "Add the right suffix and Chase sprints to the finish.",
+    title: "Race with Roar at Suffix Stadium",
+    tagline: "Add the right suffix and Roar sprints to the finish.",
     intro:
-      "Chase is racing at Suffix Stadium, Manas! Each correct suffix you add — -ing, -ed, -er, or -est — pushes him one stride ahead. Sometimes double the last letter, sometimes drop an E. Help him win!",
+      "Roar the brave cub is racing at Suffix Stadium, Manas! Each correct suffix you add — -ing, -ed, -er, or -est — pushes him one stride ahead. Sometimes double the last letter, sometimes drop an E. Help him win!",
     reward: "Champion's Stopwatch",
     theme: "spider",
     hero: "spider",
-    rescueCharacter: "chase",
+    rescueCharacter: "roar",
     unlockDay: 1,
     challenges: [
       {
@@ -1745,14 +1745,14 @@ export const QUESTS: Quest[] = [
   // ===========================================================================
   {
     id: "compound-carnival",
-    title: "Find Rubble at the Compound Carnival",
-    tagline: "Two small words crash into one big word — and free Rubble!",
+    title: "Reboot Pixel at the Compound Carnival",
+    tagline: "Two small words snap together to power Pixel back up!",
     intro:
-      "Rubble is hidden behind a giant compound-word puzzle at the Carnival, Manas! Sun + shine = sunshine! Find every compound word to bring Rubble out.",
+      "Pixel's circuits are scrambled at the Compound Carnival, Manas! Two small words crash into one big word — Sun + shine = sunshine! Find every compound word to fully reboot him.",
     reward: "Carnival Cotton Candy",
     theme: "troll",
     hero: "blippo",
-    rescueCharacter: "rubble",
+    rescueCharacter: "pixel",
     unlockDay: 1,
     challenges: [
       {
@@ -1864,23 +1864,23 @@ export const QUESTS: Quest[] = [
   },
 
   // ===========================================================================
-  // QUEST 15 — FINAL BOSS: Trollgar's Castle (Rapid fire mix)
+  // QUEST 15 — FINAL BOSS: Banish the Shadow (Rapid fire mix)
   // ===========================================================================
   {
-    id: "final-boss-trollgar",
-    title: "Final Boss: Defeat Trollgar",
-    tagline: "Rapid-fire showdown! How many can you beat in 60 seconds?",
+    id: "final-boss-shadow",
+    title: "Final Boss: Banish the Shadow",
+    tagline: "Rapid-fire showdown! 60 seconds to defeat the Shadow.",
     intro:
-      "Trollgar is BACK, Manas — and angrier than ever. He has 60 seconds of phonics riddles. The whole Phonics Squad is counting on you! Each correct answer hurts him, each wrong answer heals him. Don't stop!",
+      "The Shadow is BACK, Manas — and angrier than ever. He has 60 seconds of phonics riddles. The whole Sound Squad is counting on you! Each correct answer drives him back, each wrong one feeds him. Don't stop!",
     reward: "Champion of Phonics — Gold Trophy",
     theme: "troll",
     hero: "spider",
-    rescueCharacter: "trollgar",
+    rescueCharacter: "shadow",
     unlockDay: 1,
     challenges: [
       {
         type: "boss-rapid",
-        prompt: "Beat Trollgar in 60 seconds!",
+        prompt: "Beat the Shadow in 60 seconds!",
         durationSec: 60,
         questions: [
           {

@@ -1,10 +1,12 @@
 import { motion } from "framer-motion";
 import { sfx, speak } from "../lib/audio";
 import { PLAYER_NAME } from "../config";
-import { CHARACTERS } from "../data/characters";
+import { CHARACTERS, type CharacterId } from "../data/characters";
 import type { PlayerProgress, Quest } from "../types";
 import { CharacterImage } from "./CharacterImage";
 import { Particles } from "./Particles";
+import { DriftingMascot, BouncingMascot } from "./AnimatedMascot";
+import { CharacterById } from "./Characters";
 
 interface Props {
   quests: Quest[];
@@ -35,8 +37,9 @@ const cardVariants = {
 
 export function HomeScreen({ quests, lockedQuests, progress, dayNumber, onSelect, onReset }: Props) {
   return (
-    <div className="relative min-h-screen w-full theme-magic">
+    <div className="relative min-h-screen w-full overflow-hidden theme-magic">
       <Particles />
+      <BackgroundMascots />
       <div className="relative z-10 mx-auto flex max-w-6xl flex-col gap-10 px-4 py-10 sm:px-6">
         {/* Header */}
         <motion.header
@@ -204,6 +207,73 @@ export function HomeScreen({ quests, lockedQuests, progress, dayNumber, onSelect
           </button>
         </footer>
       </div>
+    </div>
+  );
+}
+
+// Animated mascots that drift, bounce, and float across the home screen
+// background — gives the page life and energy on first load.
+function BackgroundMascots() {
+  // Each mascot has a fixed start position and a drift/bounce pattern.
+  const cast: { id: CharacterId; top: string; size: number; mode: "drift" | "bounce" | "float"; delay: number }[] = [
+    { id: "pixel", top: "10%", size: 60, mode: "drift", delay: 0 },
+    { id: "nova", top: "70%", size: 70, mode: "float", delay: 1.5 },
+    { id: "roar", top: "85%", size: 75, mode: "bounce", delay: 0.5 },
+    { id: "whiskers", top: "20%", size: 64, mode: "drift", delay: 3 },
+    { id: "glimmer", top: "55%", size: 70, mode: "float", delay: 0.8 },
+    { id: "tinker", top: "78%", size: 64, mode: "bounce", delay: 2.2 },
+    { id: "sage", top: "30%", size: 68, mode: "float", delay: 4 },
+  ];
+
+  return (
+    <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden opacity-40">
+      {cast.map((m, i) => {
+        if (m.mode === "drift") {
+          return (
+            <DriftingMascot
+              key={m.id}
+              startX={i % 2 === 0 ? -120 : window.innerWidth + 80}
+              endX={i % 2 === 0 ? window.innerWidth + 80 : -120}
+              startY={parseInt(m.top) * 8}
+              duration={22 + i * 2}
+              delay={m.delay}
+            >
+              <CharacterById id={m.id} size={m.size} />
+            </DriftingMascot>
+          );
+        }
+        if (m.mode === "bounce") {
+          return (
+            <div
+              key={m.id}
+              style={{
+                position: "absolute",
+                left: `${10 + i * 12}%`,
+                top: m.top,
+              }}
+            >
+              <BouncingMascot delay={m.delay}>
+                <CharacterById id={m.id} size={m.size} />
+              </BouncingMascot>
+            </div>
+          );
+        }
+        // float
+        return (
+          <div
+            key={m.id}
+            style={{
+              position: "absolute",
+              right: `${5 + i * 9}%`,
+              top: m.top,
+            }}
+          >
+            <BouncingMascot delay={m.delay}>
+              <CharacterById id={m.id} size={m.size} />
+            </BouncingMascot>
+          </div>
+        );
+      })}
     </div>
   );
 }

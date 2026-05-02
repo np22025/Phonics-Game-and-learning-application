@@ -128,7 +128,7 @@ export function BossBattle({ challenge, onComplete }: Props) {
         </div>
         <div className="flex flex-1 flex-col items-stretch gap-1 px-4">
           <div className="flex items-center justify-between text-sm font-bold text-rose-700">
-            <span>Trollgar HP</span>
+            <span>Shadow HP</span>
             <span>{bossHp}</span>
           </div>
           <div className="h-4 w-full overflow-hidden rounded-full border border-rose-700 bg-rose-100">

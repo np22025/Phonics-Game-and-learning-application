@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { type CharacterId, characterAssetPath, characterAssetPathJpg } from "../data/characters";
-import { TrollCharacter, SpiderCharacter, ExplorerCharacter, BlippoCharacter } from "./Characters";
+import { CharacterById } from "./Characters";
 
 interface Props {
   characterId: CharacterId;
@@ -11,11 +11,21 @@ interface Props {
   animate?: boolean;
   // Optional motion key to retrigger animations when changed.
   motionKey?: string | number;
+  // Mood for SVG fallback expression.
+  mood?: "happy" | "sad" | "excited";
 }
 
-// Loads /public/characters/<id>.png. Falls back to .jpg, then to an inline
-// SVG mascot so the game always renders.
-export function CharacterImage({ characterId, size = 160, className = "", animate = true, motionKey }: Props) {
+// Tries /public/characters/<id>.png, then .jpg, then falls back to the
+// inline SVG mascot. The SVGs are the default — drop in your own image
+// only if you want to replace one.
+export function CharacterImage({
+  characterId,
+  size = 160,
+  className = "",
+  animate = true,
+  motionKey,
+  mood = "happy",
+}: Props) {
   const [errorCount, setErrorCount] = useState(0);
 
   const sources = [characterAssetPath(characterId), characterAssetPathJpg(characterId)];
@@ -40,7 +50,7 @@ export function CharacterImage({ characterId, size = 160, className = "", animat
           }}
         />
       )}
-      {useFallback && <FallbackMascot characterId={characterId} size={size} />}
+      {useFallback && <CharacterById id={characterId} size={size} mood={mood} />}
     </>
   );
 
@@ -59,26 +69,4 @@ export function CharacterImage({ characterId, size = 160, className = "", animat
       {Inner}
     </motion.div>
   );
-}
-
-// Map each PAW Patrol-style character to a sensible SVG fallback so the
-// game still works before the user drops in their own images.
-function FallbackMascot({ characterId, size }: { characterId: CharacterId; size: number }) {
-  switch (characterId) {
-    case "chase":
-    case "rubble":
-    case "marshall":
-      // Use spider/troll fallback for high-energy hero pups
-      return <SpiderCharacter size={size} />;
-    case "skye":
-    case "everest":
-    case "rocky":
-      return <BlippoCharacter size={size} />;
-    case "blippi":
-      return <ExplorerCharacter size={size} />;
-    case "trollgar":
-      return <TrollCharacter size={size} />;
-    default:
-      return <BlippoCharacter size={size} />;
-  }
 }

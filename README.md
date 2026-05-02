@@ -1,91 +1,80 @@
-# Phonics Quest
+# Phonics Quest — Original Edition
 
-A daily phonics adventure game for third graders — themed around grumpy trolls, a friendly web-slinger, and a curious explorer. Built with Vite + React + TypeScript + Tailwind, ready to deploy on Lovable, Vercel, Netlify, or GitHub Pages.
+A daily phonics adventure game for third graders, starring **The Sound Squad** — eight original animated heroes designed for this game. Built with Vite + React + TypeScript + Tailwind + Framer Motion.
+
+This version is publishable anywhere — every character is original creative work. No licensed character images.
 
 ## What's inside
 
 - 15 quests on Day 1 covering: CH, SH, CH-vs-SH, TH, WH, PH, silent letters, magic E, vowel teams, R-controlled vowels, diphthongs, sight words, suffixes, compound words, and a 60-second boss battle. ~190 challenges total.
-- Per-quest **rescue mechanic** — each quest stars a character (Chase, Skye, Marshall, Rubble, Everest, Rocky, Blippi) trapped in a cage / cliff / ice / mud / bubble / vines. Correct answers free them.
-- 6 challenge formats (multiple choice, listen-and-pick, sentence-fill, true/false, word sort, boss rapid-fire) so gameplay never feels repetitive.
-- Modern visual design — Outfit / Plus Jakarta Sans typography, glassmorphism cards, ambient particle backgrounds, deep gradient backdrops.
-- Framer Motion animations — spring physics on every interaction, staggered card reveals, screen transitions, character bounce, sparkle bursts.
-- Duolingo-style audio — layered chimes with reverb tails for correct, soft thud for wrong, triumphant arpeggios for level-up. All procedural — no audio files.
-- Speech synthesis pronounces every word using the Web Speech API.
-- localStorage progress: streaks, stars, completed quests persist across visits.
-- Daily unlock system — quests have an `unlockDay` so you can ship 1–2 new quests every day.
-- Drop-in character images — put PNGs in `public/characters/` to use your own art (see `CHARACTERS.md`).
+- Per-quest rescue mechanic — each quest stars a Sound Squad member trapped by The Shadow. Correct answers free them.
+- 6 challenge formats so gameplay stays fresh: multiple choice, listen-and-pick, sentence-fill, true/false, word sort, boss rapid-fire.
+- Inline animated SVG characters — every mascot is a self-contained SVG with multi-stop gradients, expressive faces, and built-in motion (blinking, glowing, drifting). No external image files needed.
+- Background mascot animations on the home screen — characters drift and bounce around the page.
+- Framer Motion physics throughout — spring entrances, staggered reveals, screen transitions.
+- Duolingo-style audio — layered chimes with reverb, soft thuds, triumphant arpeggios. All procedural.
+- Speech synthesis pronounces every word.
+- localStorage progress: streaks, stars, completed quests persist.
+- Daily unlock system — new quests via `unlockDay` field.
+
+## The Sound Squad
+
+| Character | Archetype | Specialty |
+|---|---|---|
+| Pixel | Robot Scout | CH sounds, compound words |
+| Nova | Star Sprite | SH sounds, vowel teams |
+| Roar | Brave Lion Cub | TH sounds, suffixes, diphthongs |
+| Whiskers | Fox Detective | WH riddles, silent letters |
+| Glimmer | Rainbow Unicorn | Magic E |
+| Tinker | Frog Inventor | PH sounds, R-controlled vowels |
+| Sage | Owl Wizard | Sight words, CH-vs-SH bridge |
+| Shadow | The Villain | Final boss |
+
+All eight characters are original creative work, drawn as inline SVG with built-in animations. You can override any of them with your own image by dropping a PNG/JPG into `public/characters/<id>.png` — the game checks for those files first and falls back to the SVG.
 
 ## Quickstart
 
 ```bash
 npm install
-npm run dev          # runs at http://localhost:5173
+npm run dev          # http://localhost:5173
 npm run build        # production build into ./dist
-npm run preview      # preview the production build
+npm run preview
 ```
 
-## Adding a new quest each day
+## Add a new quest each day
 
-1. Open `src/data/quests.ts`.
-2. Copy any existing quest object and update:
-   - `id` — unique kebab-case
-   - `title`, `tagline`, `intro`, `reward`
-   - `theme` — `troll` / `spider` / `explorer` / `magic`
-   - `hero` — `troll` / `spider` / `explorer` / `blippo`
-   - `unlockDay` — Day N after first session that this quest unlocks
-   - `challenges` — list of challenge objects
-3. Commit and push to GitHub. Lovable will rebuild automatically.
+1. Open `src/data/quests.ts`
+2. Copy any quest object, update `id`, `title`, `tagline`, `intro`, `reward`, `rescueCharacter`, `unlockDay`, and `challenges`
+3. Commit & push — Vercel/Lovable rebuilds automatically
 
-### Challenge types
+See `CHARACTERS.md` for the character roster and how to swap in custom art.
 
-- `multiple-choice` — pick one of 2–4 word options.
-- `listen-and-pick` — hear a spoken word, choose the correct spelling.
-- `word-sort` — tap-to-place words into labeled buckets.
-- `sentence-fill` — fill in the blank in a sentence.
-- `true-false` — true or false with optional speak prompt.
-- `boss-rapid` — 60-second timed rapid-fire round (boss battle).
+## Deployment
 
-See `src/types.ts` for the exact field shapes.
+This version is safe to deploy publicly anywhere — Lovable, Vercel, Netlify, Cloudflare Pages, GitHub Pages.
 
-## Deploy to Lovable via GitHub
+```bash
+git init
+git add .
+git commit -m "Initial commit: Phonics Quest Original"
+git branch -M main
+git remote add origin https://github.com/<your-username>/phonics-quest-original.git
+git push -u origin main
+```
 
-1. **Push to GitHub** — create a new repo and push this folder.
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit: Phonics Quest"
-   git branch -M main
-   git remote add origin https://github.com/<your-username>/phonics-quest.git
-   git push -u origin main
-   ```
-2. **Import to Lovable** — sign in to [lovable.dev](https://lovable.dev), click "Import from GitHub", and pick the repo. Lovable detects Vite + React automatically.
-3. **Publish** — Lovable gives you a public URL. Share that with anyone.
-4. **Daily updates** — edit `src/data/quests.ts`, commit, push. Lovable rebuilds automatically.
+Then import the repo at https://vercel.com/new — Vercel auto-detects Vite. No config needed.
 
-### Alternative: deploy to Netlify or Vercel
+## Cleanup before first push
 
-Both auto-detect Vite. After pushing to GitHub:
-- **Vercel:** import the repo at [vercel.com/new](https://vercel.com/new). Default settings work.
-- **Netlify:** import at [app.netlify.com](https://app.netlify.com). Build command: `npm run build`, publish directory: `dist`.
+If this folder was created by copying the previous version, you'll need to delete a few leftover files in Finder before pushing to GitHub:
 
-### GitHub Pages
+- Delete the `.git/` folder (if present) — this folder needs a fresh git history
+- Delete any `.jpg` / `.jpeg` files inside `public/characters/` (these were assets from the private version and aren't used here)
+- Delete `public/characters/_extras/` if present
+- Delete `.DS_Store` files (Finder's hidden metadata)
 
-The Vite config uses `base: "./"` so the `dist/` output works under any subpath. After `npm run build`, push the `dist/` folder to the `gh-pages` branch (or use the `gh-pages` npm package).
-
-## Tested on
-
-- Latest Chrome, Edge, Safari (desktop + iOS), Firefox.
-- Tablets and phones (responsive layout, large tap targets).
-- Audio "primes" on the first user click so iOS Safari speech works.
-
-## Customizing
-
-- **Colors / theme:** `tailwind.config.js` has color palettes per character.
-- **Animations:** `tailwind.config.js` keyframes + `src/index.css`.
-- **Mascots:** `src/components/Characters.tsx` — replace any SVG with your own.
-- **Voice:** `src/lib/audio.ts` `pickVoice()` — update preferred voice patterns.
-- **Star thresholds:** `src/components/QuestPlayer.tsx` — adjust the ratio mapping.
+Then run `git init` from a fresh shell and proceed with the deployment steps above.
 
 ## License
 
-MIT — use it freely.
+MIT — original creative work, free to use and adapt.

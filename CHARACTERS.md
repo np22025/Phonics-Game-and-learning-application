@@ -1,63 +1,58 @@
-# Adding character images
+# The Sound Squad — Character Guide
 
-The game has 15 day-1 quests, each starring one rescued character. The art for those characters lives in `public/characters/`. Drop your own images in this folder and the game uses them automatically.
+This game ships with eight original characters drawn as inline SVG. They animate by default (gentle bobs, glows, sparkle trails) and respond to gameplay (cheer on correct, slump on wrong).
 
-## Where to put files
+## The roster
+
+| ID | Name | Archetype | Accent color |
+|---|---|---|---|
+| `pixel` | Pixel the Sky Scout | Pocket-sized robot with antennae and jet boots | Sky blue |
+| `nova` | Nova the Star Sprite | Glowing five-pointed star with a tiny face | Pink/gold |
+| `roar` | Roar the Brave Cub | Tiny lion with a flowing red cape | Orange |
+| `whiskers` | Whiskers the Detective Fox | Red fox with a deerstalker hat and magnifying glass | Orange-red |
+| `glimmer` | Glimmer the Rainbow Unicorn | Pink unicorn with rainbow mane and glowing horn | Purple/pink |
+| `tinker` | Tinker the Frog Inventor | Green frog with goggles and a tool belt | Green |
+| `sage` | Sage the Wise Owl | White owl wizard with starry hat and glasses | Indigo |
+| `shadow` | The Shadow | Mischievous shadow creature villain | Deep purple |
+
+## Optional: replace any character with your own art
+
+The default SVGs already work great, but you can swap any character for your own image (commissioned art, AI-generated, photo, anything). Drop the file here:
 
 ```
-public/
-  characters/
-    chase.png
-    skye.png
-    marshall.png
-    rubble.png
-    everest.png
-    rocky.png
-    blippi.png
-    trollgar.png
+public/characters/
+  pixel.png    ← optional
+  nova.png     ← optional
+  roar.png     ← optional
+  whiskers.png ← optional
+  glimmer.png  ← optional
+  tinker.png   ← optional
+  sage.png     ← optional
+  shadow.png   ← optional
 ```
 
-PNG (transparent background) works best. JPG is also accepted as a fallback. Recommended size: 512×512 or larger.
+The game tries `.png` first, then `.jpg`, then falls back to the SVG. You can mix and match — keep some as SVG, swap others.
 
-## Which character appears in which quest
-
-| Character | Quests they star in |
-|---|---|
-| **Chase** (police pup) | The Cheese Cave Rescue (CH), Sight Word Vault, Suffix Stadium |
-| **Skye** (sky pup) | SH-City Cliff Rescue, Vowel Team Voyage, Diphthong Dunes |
-| **Marshall** (fire pup) | PH-Town Bubble |
-| **Rubble** (builder pup) | Magic E Mountain, Compound Carnival |
-| **Everest** (snow husky) | R-Controlled Rainforest |
-| **Rocky** (recycle pup) | TH Forest, Silent Library |
-| **Blippi** (explorer host) | Echo Bridge (CH vs SH), WH-Sphinx |
-| **Trollgar** (boss) | Final Boss Battle |
+Recommended size: 512×512 with transparent background.
 
 ## How the rescue mechanic works
 
-1. Each quest opens with the character "trapped" — in a cage, on a cliff, frozen in ice, stuck in mud, etc.
-2. Every correct answer reduces the trapped overlay by one step.
-3. Reach 90%+ correct → character is fully rescued, sparkles + cheer voice line + 3 stars.
-4. 70-89% → 2 stars, character is freed.
-5. 45-69% → 1 star, partial rescue.
-6. Below that → "keep going!" — replay the quest.
+Each quest stars one Sound Squad member trapped by The Shadow:
 
-## Fallbacks
+- The character appears at the top of the quest screen with a "trapped" overlay (cage, cliff, ice, mud, soap-bubble, or thorn-vines)
+- Each correct answer reduces the trapped overlay by one step
+- Reach 90%+ correct → character is fully rescued, sparkle burst, three stars, voice-line cheer
+- 70-89% → 2 stars, character freed
+- 45-69% → 1 star, partial rescue
+- Below that → the character stays trapped — replay the quest
 
-If a file is missing, the game shows an inline SVG mascot — nothing breaks. So you can add images one at a time.
+## Adding a brand-new character
 
-## Important: deployment & licensing
+1. Open `src/data/characters.ts` and add a new entry to the `CharacterId` type and `CHARACTERS` record
+2. Open `src/components/Characters.tsx` and add a new SVG component for them
+3. Update `CharacterById` switch to include the new ID
+4. Reference the new character in any quest's `rescueCharacter` field
 
-These character images are loaded from your public deploy URL. If you publish your game with a public link (Lovable / Vercel / Netlify), the images become publicly accessible.
+## Why these designs are deliberately original
 
-PAW Patrol is © Spin Master Entertainment / Nickelodeon. Blippi is © Moonbug Entertainment. Using their art in a publicly-accessible app is a copyright issue.
-
-For private family deployment (URL only shared with family, not posted publicly):
-
-- Make sure your Vercel/Netlify project is set to *not* be indexed by search engines (Settings → Privacy)
-- Don't share the link in public posts or social media
-- The risk is real but practically low for a one-family deployment
-
-For a fully bulletproof public version:
-
-- Replace these files with original art (commission an artist, or use AI-generated original characters)
-- Or use the SVG mascots that ship with the app (they're original creative work)
+This version of the game is the "publishable anywhere" version — every character archetype (robot, star, lion, fox, unicorn, frog, owl, shadow) is a generic concept used in countless original works, drawn here as a from-scratch SVG. There is a separate private version of the game with licensed-character images for personal-only use; this codebase keeps those two completely separate.
