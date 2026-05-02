@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-troll: linear-gradient(135deg, #fff7ed 0%, #fde68a 50%, #fb923c 100%);
+  --bg-spider: linear-gradient(135deg, #fee2e2 0%, #93c5fd 60%, #1e3a8a 100%);
+  --bg-explorer: linear-gradient(135deg, #d1fae5 0%, #fde68a 50%, #38bdf8 100%);
+  --bg-magic: linear-gradient(135deg, #ede9fe 0%, #fbcfe8 50%, #fde68a 100%);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Fredoka", "Comic Sans MS", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--bg-troll);
+  background-attachment: fixed;
+  color: #1f2937;
+  overflow-x: hidden;
+}
+
+/* Big tap targets so clicks always work for kids */
+button {
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+/* Disable double-tap zoom on iOS for game UI */
+button,
+[role="button"] {
+  touch-action: manipulation;
+}
+
+.tile-shadow {
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.18), 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.tile-shadow:active {
+  transform: translateY(3px);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.18), 0 6px 12px rgba(0, 0, 0, 0.18);
+}
+
+.glow {
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.15), 0 6px 16px rgba(255, 255, 255, 0.4);
+}
+
+.shimmer {
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+}
+
+/* Theme backgrounds applied at app level */
+.theme-troll {
+  background: var(--bg-troll);
+}
+.theme-spider {
+  background: var(--bg-spider);
+}
+.theme-explorer {
+  background: var(--bg-explorer);
+}
+.theme-magic {
+  background: var(--bg-magic);
+}
+
+/* Confetti pieces */
+.confetti-piece {
+  position: absolute;
+  width: 10px;
+  height: 14px;
+  border-radius: 2px;
+  top: -20px;
+  pointer-events: none;
+}
